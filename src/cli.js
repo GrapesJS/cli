@@ -1,41 +1,41 @@
 import yargs from 'yargs';
+import { serve } from './main';
 
 export const createCommands = (yargs) => {
     return yargs
-    .command('serve [port]', 'Start the server', (yargs) => {
-        // yargs.positional('port', {
-        //     describe: 'port to bind on',
-        //     default: 5000
-        // });
+    .command(['serve [port]', 'server'], 'Start the server', (yargs) => {
         yargs.positional('path', {
             alias: 'pa',
             describe: 'Path to server',
             default: 8080,
         })
-    }
-    /*{
+    }, (argv) => serve(argv))
+    .options({
+        verbose: {
+            alias: 'v',
+            description: 'Run with verbose logging',
+            type: 'boolean', // boolean | number | string
+            default: false,
+        },
         port: {
             alias: 'p',
             describe: 'Port to bind on',
+            type: 'number',
             default: 8080,
-        }
-    }*/, (argv) => {
-        if (argv.verbose) console.info(`start server on :${argv.port}`)
-        serve(argv.port)
-    }).option('verbose', {
-        alias: 'v',
-        type: 'boolean',
-        description: 'Run with verbose logging'
-    }).options({
-        port: {
-            alias: 'p',
-            describe: 'Port to bind on',
-            type: 'number', // boolean | number | string
-            default: 8080,
+        },
+        host: {
+            alias: 'h',
+            describe: 'Host to bind on',
+            type: 'string',
+            default: 'localhost',
+        },
+        devServer: {
+            describe: 'webpack-dev-server options',
+            type: 'string',
+            default: '{}',
         },
     })
     .recommendCommands()
-    .showHelp("log")
 }
 
 export const argsToOpts = () => {
@@ -49,5 +49,8 @@ export const argsToOpts = () => {
 
 export default (opts = {}) => {
     let options = argsToOpts();
+    if (!options._.length) yargs.showHelp();
+
+    // TODO no commands, .showHelp("log")
     // console.log(args, options);
 }

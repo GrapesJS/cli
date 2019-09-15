@@ -18,12 +18,11 @@ module.exports = (env = {}) => {
     const indexDev = '_' + index;
     plugins.push(new HtmlWebpackPlugin({
       template: fs.existsSync(indexDev) ? indexDev : index,
-      inject: false,
     }));
   }
 
   return {
-    entry: './src',
+    entry: './src/entry',
     mode: isProd ? 'production' : 'development',
     devtool: isProd ? 'source-map' : 'cheap-module-eval-source-map',
     output: {
@@ -40,7 +39,6 @@ module.exports = (env = {}) => {
           options: { cacheDirectory: true },
       }],
     },
-    externals: {'grapesjs': 'grapesjs'},
     plugins: plugins,
   };
 }
