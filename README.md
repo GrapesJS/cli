@@ -1,127 +1,89 @@
-# GrapesJS Plugin Boilerplate
+# GrapesJS Dev Helper
 
-
-<span><a href="https://david-dm.org/artf/grapesjs-plugin-boilerplate#info=devDependencies" title="View the status of this project's development dependencies on DavidDM"><img src="https://img.shields.io/david/dev/artf/grapesjs-plugin-boilerplate.svg" alt="Dev Dependency Status" /></a></span>
-
-This boilerplate helps you quickly start a production ready plugin for GrapesJS. If you don't know from where to start, check this guide [Creating plugins](https://grapesjs.com/docs/modules/Plugins.html). Sections below are also used as boilerplate for your README, follow these steps below
-
-### Usage
-1. Clone this repository `git clone https://github.com/artf/grapesjs-plugin-boilerplate.git YOUR-PLUGIN-NAME`
-1. Replace in all files `YOUR-PLUGIN-NAME` and `grapesjs-plugin-boilerplate` with your plugin name.
-  **The name of your plugin depends on the `name` key in your `package.json`**
-1. Update all the data in `package.json`
-1. Install dependencies `npm i` and run the local server `npm start`
-1. Start creating your plugin from `src/index.js`
-1. Show some gif/demo if possible
-1. Update README
-1. When you're ready, build your source with `npm run build`
-1. Publish
-
-
-
-
-## Summary
-
-* Plugin name: `YOUR-PLUGIN-NAME`
-* Components
-  * `new-component1`
-  * `new-component2`
-* Blocks
-  * `new-block1`
-  * `new-block1`
-...
+Simple CLI library for helping in GrapesJS plugin development.
+The goal of this package is to avoid the hassle of setting up all the necessary dependencies and configurations by centralizing all the processes necessary to create a GrapesJS plugin
 
 
 
 
 
-## Options
+## Plugin from 0 to 100 (DRAFT: NOT ALL STEPS ARE READY)
 
-|Option|Description|Default|
-|-|-|-
-|`option1`|Description option|`default value`|
+Create a production-ready plugin in a few simple steps.
 
-
-
-
-
-## Download
-
-* CDN
-  * `https://unpkg.com/YOUR-PLUGIN-NAME`
-* NPM
-  * `npm i YOUR-PLUGIN-NAME`
-* GIT
-  * `git clone https://github.com/YOUR-NAME/YOUR-PLUGIN-NAME.git`
-
-
-
-
-
-## Usage
-
-Directly in the browser
-```html
-<link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet"/>
-<script src="https://unpkg.com/grapesjs"></script>
-<script src="path/to/YOUR-PLUGIN-NAME.min.js"></script>
-
-<div id="gjs"></div>
-
-<script type="text/javascript">
-  var editor = grapesjs.init({
-      container : '#gjs',
-      // ...
-      plugins: ['YOUR-PLUGIN-NAME'],
-      pluginsOpts: {
-        'YOUR-PLUGIN-NAME': { /* options */ }
-      }
-  });
-</script>
-```
-
-Modern javascript
-```js
-import grapesjs from 'grapesjs';
-import yourPluginName from 'YOUR-PLUGIN-NAME';
-
-const editor = grapesjs.init({
-  container : '#gjs',
-  // ...
-  plugins: [yourPluginName],
-  pluginsOpts: {
-    [yourPluginName]: { /* options */ }
-  }
-  // or
-  plugins: [
-    editor => yourPluginName(editor, { /* options */ }),
-  ],
-});
-```
-
-
-
-
-
-## Development
-
-Clone the repository
+1. Create a folder for your plugin and init some preliminary steps
 
 ```sh
-$ git clone https://github.com/YOUR-NAME/YOUR-PLUGIN-NAME.git
-$ cd YOUR-PLUGIN-NAME
+mkdir grapesjs-my-plugin
+cd grapesjs-my-plugin
+npm init -y
+git init
 ```
 
-Install dependencies
+1. Install the package
 
 ```sh
-$ npm i
+npm i -D grapesjs-dev-helper
 ```
 
-Start the dev server
+1. [TODO] Init your plugin project by following few steps
 
 ```sh
-$ npm start
+npx grapesjs-dev-helper init
+```
+
+You can also skip all the questions with `-y` option
+
+```sh
+npx grapesjs-dev-helper init -y
+```
+
+1. [TODO] The directory `src` will be created with few files inside and `index.js` is the entry point of your plugin. Before starting developing your plugin run the development server and follow the printed URL (eg. default is http://localhost:8080)
+
+```sh
+npx grapesjs-dev-helper serve
+```
+
+If you need a custom port use the `-p` option
+
+```sh
+npx grapesjs-dev-helper serve -p 8081
+```
+
+Under the hood we use `webpack-dev-server` and you can pass its option via CLI in this way
+
+```sh
+npx grapesjs-dev-helper serve --devServer='{"https": true}'
+```
+
+1. Once the development is finished you can build your plugin for production
+
+```sh
+grapesjs-dev-helper build
+```
+
+
+
+
+
+## Generic usage
+
+Generic CLI usage
+
+```sh
+grapesjs-dev-helper COMMAND --OPT1 --OPT2=VALUE
+```
+
+Generic help for a command
+
+```sh
+grapesjs-dev-helper COMMAND --help
+```
+
+Show all available commands
+
+```sh
+grapesjs-dev-helper
 ```
 
 

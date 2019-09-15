@@ -4,11 +4,31 @@ import { serve } from './main';
 export const createCommands = (yargs) => {
     return yargs
     .command(['serve [port]', 'server'], 'Start the server', (yargs) => {
-        yargs.positional('path', {
-            alias: 'pa',
-            describe: 'Path to server',
+        yargs
+        .positional('devServer', {
+            describe: 'webpack-dev-server options',
+            type: 'string',
+            default: '{}',
+        })
+        .positional('host', {
+            alias: 'h',
+            describe: 'Host to bind on',
+            type: 'string',
+            default: 'localhost',
+        })
+        .positional('port', {
+            alias: 'p',
+            describe: 'Port to bind on',
+            type: 'number',
             default: 8080,
         })
+    }, (argv) => serve(argv))
+    .command('build', 'Build the source', (yargs) => {
+        // yargs.positional('path', {
+        //     alias: 'pa',
+        //     describe: 'Path to server',
+        //     default: 8080,
+        // })
     }, (argv) => serve(argv))
     .options({
         verbose: {
@@ -16,23 +36,6 @@ export const createCommands = (yargs) => {
             description: 'Run with verbose logging',
             type: 'boolean', // boolean | number | string
             default: false,
-        },
-        port: {
-            alias: 'p',
-            describe: 'Port to bind on',
-            type: 'number',
-            default: 8080,
-        },
-        host: {
-            alias: 'h',
-            describe: 'Host to bind on',
-            type: 'string',
-            default: 'localhost',
-        },
-        devServer: {
-            describe: 'webpack-dev-server options',
-            type: 'string',
-            default: '{}',
         },
     })
     .recommendCommands()
