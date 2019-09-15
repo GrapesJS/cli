@@ -1,5 +1,5 @@
 import yargs from 'yargs';
-import { serve } from './main';
+import { serve, build } from './main';
 
 export const createCommands = (yargs) => {
     return yargs
@@ -24,12 +24,13 @@ export const createCommands = (yargs) => {
         })
     }, (argv) => serve(argv))
     .command('build', 'Build the source', (yargs) => {
-        // yargs.positional('path', {
-        //     alias: 'pa',
-        //     describe: 'Path to server',
-        //     default: 8080,
-        // })
-    }, (argv) => serve(argv))
+        yargs
+        .positional('build', {
+            describe: 'webpack options',
+            type: 'string',
+            default: '{}',
+        })
+    }, (argv) => build(argv))
     .options({
         verbose: {
             alias: 'v',

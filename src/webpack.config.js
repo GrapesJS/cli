@@ -1,32 +1,33 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const pkg = require('./package.json');
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
-const name = pkg.name;
+const dirCwd = process.cwd();
+const pkg = require(`${dirCwd}/package.json`);
 let plugins = [];
 
-module.exports = (env = {}) => {
-  const isProd = env.production;
+module.exports = (opts = {}) => {
+  const name = pkg.name;
+  const isProd = opts.production;
 
   if (isProd) {
     plugins = [
       new webpack.BannerPlugin(`${name} - ${pkg.version}`),
     ]
   } else {
-    const index = 'index.html';
-    const indexDev = '_' + index;
+    const index = `${dirCwd}/index.html`;
+    const indexDev = `${dirCwd}/_index.html`;
     plugins.push(new HtmlWebpackPlugin({
       template: fs.existsSync(indexDev) ? indexDev : index,
     }));
   }
 
   return {
-    entry: './src/entry',
+    entry: path.resolve(dirCwd, './src/entry'),
     mode: isProd ? 'production' : 'development',
     devtool: isProd ? 'source-map' : 'cheap-module-eval-source-map',
     output: {
-        path: path.resolve(__dirname),
+        path: path.resolve(dirCwd),
         filename: `dist/${name}.min.js`,
         library: name,
         libraryTarget: 'umd',

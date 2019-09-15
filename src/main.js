@@ -1,11 +1,11 @@
 import webpack from 'webpack';
 import webpackDevServer from 'webpack-dev-server';
-import webpackConfig from '../webpack.config';
+import webpackConfig from './webpack.config';
 import chalk from 'chalk';
 
 const printRow = (str, { color = 'green' } = {}) => {
     console.log('');
-    console.log('%s...', chalk[color].bold(str));
+    console.log(chalk[color].bold(str));
     console.log('');
 }
 
@@ -43,7 +43,7 @@ const normalizeJsonOpt = (opts, key) => {
  * @param {Object} opts
  */
 export const serve = (opts = {}) => {
-    printRow('Start the development server');
+    printRow('Start the development server...');
     const { host, port } = opts;
     const isVerb = opts.verbose;
     const resultWebpackConf = {
@@ -70,11 +70,35 @@ export const serve = (opts = {}) => {
     });
 };
 
+/**
+ * Build the library files
+ * @param {Object} opts
+ */
 export const build = (opts = {}) => {
-    printRow('Start build application');
-    webpackConfig({ production: 1 })
+    printRow('Start building the library...');
+    const isVerb = opts.verbose;
+    const buildConf = {
+        ...webpackConfig({ production: 1 }),
+        ...normalizeJsonOpt(opts, 'build'),
+    };
+
+    if (isVerb) {
+        log(chalk.yellow('Webpack config:\n'), buildConf, '\n');
+    }
+
+
+    webpack(buildConf, (err, stats) => {
+        if (err || stats.hasErrors()) {
+            printError('Error during building');
+            printError(err);
+        }
+
+        const result = stats.toString({ colors: true });
+        log(result);
+    });
 };
 
 export default {
+    serve,
     build,
 }
