@@ -3,10 +3,11 @@ const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
 const dirCwd = process.cwd();
-const pkg = require(`${dirCwd}/package.json`);
 let plugins = [];
 
 module.exports = (opts = {}) => {
+  const pkg = require(`${dirCwd}/package.json`);
+  const { args } = opts;
   const name = pkg.name;
   const isProd = opts.production;
 
@@ -23,12 +24,12 @@ module.exports = (opts = {}) => {
   }
 
   return {
-    entry: path.resolve(dirCwd, './src/entry'),
+    entry: path.resolve(dirCwd, args.entry),
     mode: isProd ? 'production' : 'development',
     devtool: isProd ? 'source-map' : 'cheap-module-eval-source-map',
     output: {
-        path: path.resolve(dirCwd),
-        filename: `dist/${name}.min.js`,
+        path: path.resolve(dirCwd, args.output),
+        filename: `${name}.min.js`,
         library: name,
         libraryTarget: 'umd',
     },
@@ -37,7 +38,12 @@ module.exports = (opts = {}) => {
           test: /\.js$/,
           loader: 'babel-loader',
           include: /src/,
-          options: { cacheDirectory: true },
+          options: {
+            presets: [ 'env' ],
+            plugins: [ 'transform-object-rest-spread' ],
+            cacheDirectory: true,
+            ...args.babel,
+          },
       }],
     },
     plugins: plugins,

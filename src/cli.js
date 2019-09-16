@@ -25,10 +25,35 @@ export const createCommands = (yargs) => {
     }, (argv) => serve(argv))
     .command('build', 'Build the source', (yargs) => {
         yargs
-        .positional('build', {
-            describe: 'webpack options',
+        .positional('config', {
+            describe: 'webpack configuration options',
             type: 'string',
             default: '{}',
+        })
+        .positional('babel', {
+            describe: 'Babel configuration object',
+            type: 'string',
+            default: '{}',
+        })
+        .positional('entry', {
+            describe: 'Library entry point',
+            type: 'string',
+            default: 'src/index',
+        })
+        .positional('output', {
+            describe: 'Build destination directory',
+            type: 'string',
+            default: 'dist',
+        })
+        .positional('stats', {
+            describe: 'Options for webpack Stats instance',
+            type: 'string',
+            default: '{}',
+        })
+        .positional('patch', {
+            describe: 'Increase automatically the patch version',
+            type: 'boolean',
+            default: true,
         })
     }, (argv) => build(argv))
     .options({
@@ -45,8 +70,8 @@ export const createCommands = (yargs) => {
 export const argsToOpts = () => {
     const { argv } = createCommands(yargs);
     const result = { ...argv };
+    delete result.$0;
     // delete result._;
-    // delete result.$0;
 
     return result;
 };
