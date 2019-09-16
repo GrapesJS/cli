@@ -41,7 +41,7 @@ module.exports = (opts = {}) => {
           options: {
             presets: [
               [ require('@babel/preset-env'), {
-                targets: '> 0.25%, not dead',
+                targets: args.targets,
                 useBuiltIns: 'usage',
                 corejs: 3,
               } ]

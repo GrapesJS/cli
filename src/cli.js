@@ -35,6 +35,11 @@ export const createCommands = (yargs) => {
             type: 'string',
             default: '{}',
         })
+        .positional('targets', {
+            describe: 'Browser targets in browserslist query',
+            type: 'string',
+            default: '> 0.25%, not dead',
+        })
         .positional('entry', {
             describe: 'Library entry point',
             type: 'string',
