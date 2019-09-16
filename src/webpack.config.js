@@ -36,11 +36,18 @@ module.exports = (opts = {}) => {
     module: {
       rules: [{
           test: /\.js$/,
-          loader: 'babel-loader',
+          loader: path.resolve(__dirname, './../node_modules/babel-loader'),
           include: /src/,
           options: {
-            presets: [ 'env' ],
-            plugins: [ 'transform-object-rest-spread' ],
+            presets: [
+              [ require('@babel/preset-env'), {
+                targets: '> 0.25%, not dead',
+                useBuiltIns: 'usage',
+                corejs: 3,
+              } ]
+            ],
+            // plugins: [ 'transform-object-rest-spread' ],
+            plugins: [ require('@babel/plugin-transform-runtime') ],
             cacheDirectory: true,
             ...args.babel,
           },
