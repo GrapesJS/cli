@@ -42,8 +42,8 @@ module.exports = (opts = {}) => {
             presets: [
               [ require('@babel/preset-env'), {
                 targets: args.targets,
-                useBuiltIns: 'usage',
-                corejs: 3,
+                // useBuiltIns: 'usage', // this makes the build much bigger
+                // corejs: 3,
               } ]
             ],
             plugins: [ require('@babel/plugin-transform-runtime') ],
