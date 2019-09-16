@@ -1,6 +1,6 @@
 {
   "name": "grapesjs-dev-helper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "GrapesJS plugin for the development",
   "main": "src/index.js",
   "bin": "bin/grapesjs-dev-helper",
