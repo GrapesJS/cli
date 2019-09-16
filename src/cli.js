@@ -12,20 +12,10 @@ const webpackOptions = yargs => {
         type: 'string',
         default: '{}',
     })
-    .positional('targets', {
-        describe: 'Browser targets in browserslist query',
-        type: 'string',
-        default: '> 0.25%, not dead',
-    })
     .positional('entry', {
         describe: 'Library entry point',
         type: 'string',
         default: 'src/index',
-    })
-    .positional('output', {
-        describe: 'Build destination directory',
-        type: 'string',
-        default: 'dist',
     })
 }
 
@@ -68,7 +58,17 @@ export const createCommands = (yargs) => {
             describe: 'Increase automatically the patch version',
             type: 'boolean',
             default: true,
-        });
+        })
+        .positional('targets', {
+            describe: 'Browser targets in browserslist query',
+            type: 'string',
+            default: '> 0.25%, not dead',
+        })
+        .positional('output', {
+            describe: 'Build destination directory',
+            type: 'string',
+            default: 'dist',
+        })
         webpackOptions(yargs);
     }, (argv) => build(argv))
     .options({
