@@ -36,7 +36,7 @@ module.exports = (opts = {}) => {
     module: {
       rules: [{
           test: /\.js$/,
-          loader: path.resolve(__dirname, './../node_modules/babel-loader'),
+          loader: 'babel-loader',
           include: /src/,
           options: {
             presets: [
@@ -46,7 +46,6 @@ module.exports = (opts = {}) => {
                 corejs: 3,
               } ]
             ],
-            // plugins: [ 'transform-object-rest-spread' ],
             plugins: [ require('@babel/plugin-transform-runtime') ],
             cacheDirectory: true,
             ...args.babel,
