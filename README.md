@@ -38,7 +38,7 @@ You can also skip all the questions with `-y` option
 npx grapesjs-dev-helper init -y
 ```
 
-1. [TODO] The directory `src` will be created with few files inside and `index.js` is the entry point of your plugin. Before starting developing your plugin run the development server and follow the printed URL (eg. default is http://localhost:8080)
+1. The directory `src` will be created with few files inside and `index.js` is the entry point of your plugin. Before starting developing your plugin run the development server and follow the printed URL (eg. default is http://localhost:8080)
 
 ```sh
 npx grapesjs-dev-helper serve
@@ -66,24 +66,24 @@ grapesjs-dev-helper build
 
 
 
-## Generic usage
-
-Generic CLI usage
-
-```sh
-grapesjs-dev-helper COMMAND --OPT1 --OPT2=VALUE
-```
-
-Generic help for a command
-
-```sh
-grapesjs-dev-helper COMMAND --help
-```
+## Generic CLI usage
 
 Show all available commands
 
 ```sh
 grapesjs-dev-helper
+```
+
+Show available options for a command
+
+```sh
+grapesjs-dev-helper COMMAND --help
+```
+
+Run the command
+
+```sh
+grapesjs-dev-helper COMMAND --OPT1 --OPT2=VALUE
 ```
 
 
