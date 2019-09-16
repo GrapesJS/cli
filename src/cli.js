@@ -1,6 +1,34 @@
 import yargs from 'yargs';
 import { serve, build } from './main';
 
+const webpackOptions = yargs => {
+    yargs.positional('config', {
+        describe: 'webpack configuration options',
+        type: 'string',
+        default: '{}',
+    })
+    .positional('babel', {
+        describe: 'Babel configuration object',
+        type: 'string',
+        default: '{}',
+    })
+    .positional('targets', {
+        describe: 'Browser targets in browserslist query',
+        type: 'string',
+        default: '> 0.25%, not dead',
+    })
+    .positional('entry', {
+        describe: 'Library entry point',
+        type: 'string',
+        default: 'src/index',
+    })
+    .positional('output', {
+        describe: 'Build destination directory',
+        type: 'string',
+        default: 'dist',
+    })
+}
+
 export const createCommands = (yargs) => {
     return yargs
     .command(['serve [port]', 'server'], 'Start the server', (yargs) => {
@@ -22,34 +50,15 @@ export const createCommands = (yargs) => {
             type: 'number',
             default: 8080,
         })
+        .positional('htmlWebpack', {
+            describe: 'html-webpack-plugin options',
+            type: 'string',
+            default: '{}',
+        })
+        webpackOptions(yargs);
     }, (argv) => serve(argv))
     .command('build', 'Build the source', (yargs) => {
         yargs
-        .positional('config', {
-            describe: 'webpack configuration options',
-            type: 'string',
-            default: '{}',
-        })
-        .positional('babel', {
-            describe: 'Babel configuration object',
-            type: 'string',
-            default: '{}',
-        })
-        .positional('targets', {
-            describe: 'Browser targets in browserslist query',
-            type: 'string',
-            default: '> 0.25%, not dead',
-        })
-        .positional('entry', {
-            describe: 'Library entry point',
-            type: 'string',
-            default: 'src/index',
-        })
-        .positional('output', {
-            describe: 'Build destination directory',
-            type: 'string',
-            default: 'dist',
-        })
         .positional('stats', {
             describe: 'Options for webpack Stats instance',
             type: 'string',
@@ -59,7 +68,8 @@ export const createCommands = (yargs) => {
             describe: 'Increase automatically the patch version',
             type: 'boolean',
             default: true,
-        })
+        });
+        webpackOptions(yargs);
     }, (argv) => build(argv))
     .options({
         verbose: {

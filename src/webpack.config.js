@@ -8,6 +8,7 @@ let plugins = [];
 module.exports = (opts = {}) => {
   const pkg = require(`${dirCwd}/package.json`);
   const { args } = opts;
+  const { htmlWebpack = {} } = args;
   const name = pkg.name;
   const isProd = opts.production;
 
@@ -16,10 +17,29 @@ module.exports = (opts = {}) => {
       new webpack.BannerPlugin(`${name} - ${pkg.version}`),
     ]
   } else {
-    const index = `${dirCwd}/index.html`;
-    const indexDev = `${dirCwd}/_index.html`;
+    const fname = 'index.html';
+    const index = `${dirCwd}/${fname}`;
+    const indexDev = `${dirCwd}/_${fname}`;
+    let template = path.resolve(__dirname, `./../${fname}`);
+
+    if (fs.existsSync(indexDev)) {
+      template = indexDev;
+    } else if (fs.existsSync(index)) {
+      template = index;
+    }
+
     plugins.push(new HtmlWebpackPlugin({
-      template: fs.existsSync(indexDev) ? indexDev : index,
+      inject: 'head',
+      template,
+      ...htmlWebpack,
+      templateParameters: {
+        name,
+        title: name,
+        gjsVersion: 'latest',
+        pathGjs: '',
+        pathGjsCss: '',
+        ...htmlWebpack.templateParameters || {},
+      },
     }));
   }
 
