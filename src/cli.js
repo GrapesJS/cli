@@ -1,5 +1,6 @@
 import yargs from 'yargs';
 import { serve, build } from './main';
+import chalk from 'chalk';
 
 const webpackOptions = yargs => {
     yargs.positional('config', {
@@ -71,6 +72,8 @@ export const createCommands = (yargs) => {
         });
         webpackOptions(yargs);
     }, (argv) => build(argv))
+    .command('init', '[NOT YET READY] Init GrapesJS plugin project', (yargs) => {
+    }, (argv) => console.log('\n', chalk.yellow.bold('This command is not yet ready!'), '\n'))
     .options({
         verbose: {
             alias: 'v',
@@ -86,7 +89,6 @@ export const argsToOpts = () => {
     const { argv } = createCommands(yargs);
     const result = { ...argv };
     delete result.$0;
-    // delete result._;
 
     return result;
 };
@@ -94,7 +96,4 @@ export const argsToOpts = () => {
 export default (opts = {}) => {
     let options = argsToOpts();
     if (!options._.length) yargs.showHelp();
-
-    // TODO no commands, .showHelp("log")
-    // console.log(args, options);
 }
