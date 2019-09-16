@@ -1,12 +1,12 @@
 {
   "name": "grapesjs-dev-helper",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "GrapesJS plugin for the development",
   "main": "src/index.js",
   "bin": "bin/grapesjs-dev-helper",
   "scripts": {
     "lint": "eslint src",
-    "v:patch": "npm version --no-git-tag-version patch"
+    "patch": "npm version --no-git-tag-version patch"
   },
   "repository": {
     "type": "git",
