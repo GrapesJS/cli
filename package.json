@@ -1,22 +1,22 @@
 {
-  "name": "grapesjs-dev-helper",
+  "name": "grapesjs-cli",
   "version": "1.0.5",
-  "description": "GrapesJS plugin for the development",
+  "description": "GrapesJS CLI tool for the development",
   "main": "src/index.js",
-  "bin": "bin/grapesjs-dev-helper",
+  "bin": "bin/grapesjs-cli",
   "scripts": {
     "lint": "eslint src",
-    "patch": "npm version --no-git-tag-version patch"
+    "patch": "npm version patch -m 'Bump v%s'"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/artf/grapesjs-dev-helper.git"
+    "url": "https://github.com/artf/grapesjs-cli.git"
   },
   "keywords": [
     "grapesjs",
     "plugin",
     "dev",
-    "helper"
+    "cli"
   ],
   "author": "Artur Arseniev",
   "license": "BSD-3-Clause",
