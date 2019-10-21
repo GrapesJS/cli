@@ -1,7 +1,7 @@
 # GrapesJS CLI
 
 Simple CLI library for helping in GrapesJS plugin development.
-The goal of this package is to avoid the hassle of setting up all the necessary dependencies and configurations by centralizing all the processes necessary to create a GrapesJS plugin
+The goal of this package is to avoid the hassle of setting up all the necessary dependencies and configurations by centralizing all the processes to create a GrapesJS plugin
 
 
 
@@ -23,43 +23,43 @@ git init
 1. Install the package
 
 ```sh
-npm i -D grapesjs-dev-helper
+npm i -D grapesjs-cli
 ```
 
 1. [TODO] Init your plugin project by following few steps
 
 ```sh
-npx grapesjs-dev-helper init
+npx grapesjs-cli init
 ```
 
 You can also skip all the questions with `-y` option
 
 ```sh
-npx grapesjs-dev-helper init -y
+npx grapesjs-cli init -y
 ```
 
 1. The directory `src` will be created with few files inside and `index.js` will be the entry point of your plugin. Before starting developing your plugin run the development server and follow the printed URL (eg. default is http://localhost:8080)
 
 ```sh
-npx grapesjs-dev-helper serve
+npx grapesjs-cli serve
 ```
 
 If you need a custom port use the `-p` option
 
 ```sh
-npx grapesjs-dev-helper serve -p 8081
+npx grapesjs-cli serve -p 8081
 ```
 
 Under the hood we use `webpack-dev-server` and you can pass its option via CLI in this way
 
 ```sh
-npx grapesjs-dev-helper serve --devServer='{"https": true}'
+npx grapesjs-cli serve --devServer='{"https": true}'
 ```
 
 1. Once the development is finished you can build your plugin for production
 
 ```sh
-grapesjs-dev-helper build
+grapesjs-cli build
 ```
 
 
@@ -71,19 +71,19 @@ grapesjs-dev-helper build
 Show all available commands
 
 ```sh
-grapesjs-dev-helper
+grapesjs-cli
 ```
 
 Show available options for a command
 
 ```sh
-grapesjs-dev-helper COMMAND --help
+grapesjs-cli COMMAND --help
 ```
 
 Run the command
 
 ```sh
-grapesjs-dev-helper COMMAND --OPT1 --OPT2=VALUE
+grapesjs-cli COMMAND --OPT1 --OPT2=VALUE
 ```
 
 
