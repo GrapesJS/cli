@@ -4,7 +4,6 @@ import webpackConfig from './webpack.config';
 import { exec } from 'child_process';
 import chalk from 'chalk';
 
-
 const printRow = (str, { color = 'green' } = {}) => {
     console.log('');
     console.log(chalk[color].bold(str));
@@ -128,6 +127,8 @@ export const build = (opts = {}) => {
         buildWebpack();
     }
 };
+
+export { default as init } from './init';
 
 export default {
     serve,
