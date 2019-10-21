@@ -1,5 +1,8 @@
 # GrapesJS CLI
 
+<span><a href="https://david-dm.org/artf/grapesjs-cli#info=dependencies"><img src="https://img.shields.io/david/artf/grapesjs-cli.svg" alt="Dependency Status" /></a></span>
+
+
 Simple CLI library for helping in GrapesJS plugin development.
 The goal of this package is to avoid the hassle of setting up all the necessary dependencies and configurations by centralizing all the processes to create a GrapesJS plugin
 
