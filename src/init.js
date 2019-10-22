@@ -1,5 +1,6 @@
 import inquirer from 'inquirer';
 import { printRow, printError, isUndefined } from './utils';
+import Listr from 'listr';
 import path from 'path';
 
 const getName = str => str
@@ -9,12 +10,41 @@ const getName = str => str
     .map(i => i[0].toUpperCase() + i.slice(1))
     .join(' ');
 
-export const initPlugin = (opts = {}) => {
-    printRow('Start file creation...');
+const createSourceFiles = (opts = {}) => {
     // File creation
         // Add .gitignore if doesn't exists yet
         // Check also package.json if exists
-    // Package.json update
+};
+
+const createFileComponents = (opts = {}) => {
+};
+
+const createFileBlocks = (opts = {}) => {
+};
+
+const updatePackage = (opts = {}) => {
+};
+
+export const initPlugin = async(opts = {}) => {
+    printRow('Start file creation...');
+    const tasks = new Listr([
+        {
+            title: 'Creating initial source files',
+            task: () => createSourceFiles(opts),
+        }, {
+            title: 'Creating custom Component Type file',
+            task: () => createFileComponents(opts),
+            enabled: () => opts.components,
+        }, {
+            title: 'Creating Blocks file',
+            task: () => createFileBlocks(opts),
+            enabled: () => opts.components,
+        }, {
+            title: 'Update package.json',
+            task: () => updatePackage(opts),
+        },
+    ]);
+    await tasks.run();
 }
 
 export default async (opts = {}) => {
@@ -77,5 +107,6 @@ export default async (opts = {}) => {
         ...answers,
     }
 
-    initPlugin(results);
+    await initPlugin(results);
+    printRow('Project created! Happy coding');
 }
