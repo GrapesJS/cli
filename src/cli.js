@@ -73,6 +73,33 @@ export const createCommands = (yargs) => {
         webpackOptions(yargs);
     }, (argv) => build(argv))
     .command('init', 'Init GrapesJS plugin project', (yargs) => {
+        yargs
+        .positional('yes', {
+            alias: 'y',
+            describe: 'All default answers',
+            type: 'boolean',
+            default: false,
+        })
+        .positional('name', {
+            describe: 'Name of the project',
+            type: 'string',
+        })
+        .positional('rName', {
+            describe: 'Repository name',
+            type: 'string',
+        })
+        .positional('user', {
+            describe: 'Repository username',
+            type: 'string',
+        })
+        .positional('components', {
+            describe: 'Indicate to include custom component types API',
+            type: 'boolean',
+        })
+        .positional('blocks', {
+            describe: 'Indicate to include blocks API',
+            type: 'boolean',
+        })
     }, (argv) => init(argv))
     .options({
         verbose: {

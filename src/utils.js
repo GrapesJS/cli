@@ -12,3 +12,5 @@ export const printRow = (str, {
 export const printError = str => {
     printRow(str, { color: 'red' });
 }
+
+export const isUndefined = value => typeof value === 'undefined';
