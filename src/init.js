@@ -67,8 +67,6 @@ export default async (opts = {}) => {
         blocks: blocks || true,
     };
 
-    // Will you need to add Custom Component Types? [yes]
-    // Will you need to add Blocks? [yes]
     const questions = [];
 
     if (!yes) {

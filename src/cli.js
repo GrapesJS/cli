@@ -1,6 +1,16 @@
 import yargs from 'yargs';
+import fs from 'fs';
+import path from 'path';
 import { serve, build, init } from './main';
 import chalk from 'chalk';
+import { version } from '../package.json';
+
+yargs.usage(
+    chalk.green.bold(
+        fs.readFileSync(path.resolve(__dirname, './banner.txt'), 'utf8') +
+        `\nv${version}`
+    )
+);
 
 const webpackOptions = yargs => {
     yargs.positional('config', {
