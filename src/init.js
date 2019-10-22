@@ -9,6 +9,14 @@ const getName = str => str
     .map(i => i[0].toUpperCase() + i.slice(1))
     .join(' ');
 
+export const initPlugin = (opts = {}) => {
+    printRow('Start file creation...');
+    // File creation
+        // Add .gitignore if doesn't exists yet
+        // Check also package.json if exists
+    // Package.json update
+}
+
 export default async (opts = {}) => {
     printRow('Init the project...');
     const rootDir = path.basename(process.cwd());
@@ -68,5 +76,6 @@ export default async (opts = {}) => {
         ...results,
         ...answers,
     }
-    console.log(results, getName(rootDir));
+
+    initPlugin(results);
 }
