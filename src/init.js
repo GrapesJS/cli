@@ -36,30 +36,37 @@ const createSourceFiles = async (opts = {}) => {
     const ignDst = resolveRoot('.gitignore');
     const indxSrc = getTemplateFileContent('src/index.js');
     const indxDst = resolveRoot('src/index.js');
-    const cmpSrc = resolveLocal('src/components.js');
-    const cmpDst = resolveRoot('src/components.js');
-    const blkSrc = resolveLocal('src/blocks.js');
-    const blkDst = resolveRoot('src/blocks.js');
     const indexCnt = getTemplateFileContent('_index.html');
     const indexDst = resolveRoot('_index.html');
     const license = spdxLicenseList[opts.license];
     const licenseTxt = license && (license.licenseText || '')
         .replace('<year>', `${new Date().getFullYear()}-current`)
         .replace('<copyright holders>', opts.name);
-    fs.writeFileSync(rdmDst, template(rdmSrc)(opts));
-    licenseTxt && fs.writeFileSync(resolveRoot('LICENSE'), licenseTxt);
-    fs.copyFileSync(ignSrc, ignDst);
     ensureDir(indxDst);
+    // write src/_index.html
     fs.writeFileSync(indxDst, template(indxSrc)(opts).trim());
-    opts.components && fs.copyFileSync(cmpSrc, cmpDst);
-    opts.blocks && fs.copyFileSync(blkSrc, blkDst);
+    // write _index.html
     fs.writeFileSync(indexDst, template(indexCnt)(opts));
+    // Write README.md
+    fs.writeFileSync(rdmDst, template(rdmSrc)(opts));
+    // write LICENSE
+    licenseTxt && fs.writeFileSync(resolveRoot('LICENSE'), licenseTxt);
+    // copy .gitignore
+    fs.copyFileSync(ignSrc, ignDst);
 };
 
 const createFileComponents = (opts = {}) => {
+    const filepath = 'src/components.js';
+    const cmpSrc = resolveLocal(filepath);
+    const cmpDst = resolveRoot(filepath);
+    opts.components && fs.copyFileSync(cmpSrc, cmpDst);
 };
 
 const createFileBlocks = (opts = {}) => {
+    const filepath = 'src/blocks.js';
+    const blkSrc = resolveLocal(filepath);
+    const blkDst = resolveRoot(filepath);
+    opts.blocks && fs.copyFileSync(blkSrc, blkDst);
 };
 
 const updatePackage = (opts = {}) => {
