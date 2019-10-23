@@ -40,17 +40,20 @@ const createSourceFiles = async (opts = {}) => {
     const cmpDst = resolveRoot('src/components.js');
     const blkSrc = resolveLocal('src/blocks.js');
     const blkDst = resolveRoot('src/blocks.js');
+    const indexCnt = getTemplateFileContent('_index.html');
+    const indexDst = resolveRoot('_index.html');
     const license = spdxLicenseList[opts.license];
     const licenseTxt = license && (license.licenseText || '')
         .replace('<year>', `${new Date().getFullYear()}-current`)
         .replace('<copyright holders>', opts.name);
     fs.writeFileSync(rdmDst, template(rdmSrc)(opts));
     licenseTxt && fs.writeFileSync(resolveRoot('LICENSE'), licenseTxt);
-    !fs.existsSync(ignDst) && fs.copyFileSync(ignSrc, ignDst);
+    fs.copyFileSync(ignSrc, ignDst);
     ensureDir(indxDst);
     fs.writeFileSync(indxDst, template(indxSrc)(opts).trim());
     opts.components && fs.copyFileSync(cmpSrc, cmpDst);
     opts.blocks && fs.copyFileSync(blkSrc, blkDst);
+    fs.writeFileSync(indexDst, template(indexCnt)(opts));
 };
 
 const createFileComponents = (opts = {}) => {
