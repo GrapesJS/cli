@@ -33,7 +33,7 @@ const resolveLocal = pth => {
 const createSourceFiles = async (opts = {}) => {
     const rdmSrc = getTemplateFileContent('README.md')
     const rdmDst = resolveRoot('README.md');
-    const ignSrc = resolveLocal('.gitignore');
+    const ignSrc = resolveLocal('.gitignore-t');
     const ignDst = resolveRoot('.gitignore');
     const indxSrc = getTemplateFileContent('src/index.js');
     const indxDst = resolveRoot('src/index.js');
