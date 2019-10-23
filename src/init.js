@@ -2,6 +2,11 @@ import inquirer from 'inquirer';
 import { printRow, printError, isUndefined } from './utils';
 import Listr from 'listr';
 import path from 'path';
+import fs from 'fs';
+import spdxLicenseList from 'spdx-license-list/full';
+import template from 'lodash.template';
+
+const tmpPath = './template';
 
 const getName = str => str
     .replace(/\_/g, '-')
@@ -10,10 +15,19 @@ const getName = str => str
     .map(i => i[0].toUpperCase() + i.slice(1))
     .join(' ');
 
-const createSourceFiles = (opts = {}) => {
-    // File creation
-        // Add .gitignore if doesn't exists yet
-        // Check also package.json if exists
+const createSourceFiles = async (opts = {}) => {
+    const rootPath = process.cwd();
+    const rmdPath = path.resolve(__dirname, `${tmpPath}/README.md`);
+    const rdmSrc = fs.readFileSync(rmdPath, 'utf8');
+    const rdmDst = path.resolve(rootPath, 'README.md');
+    const license = spdxLicenseList[opts.license];
+    const licenseTxt = license && (license.licenseText || '')
+        .replace('<year>', `${new Date().getFullYear()}-current`)
+        .replace('<copyright holders>', opts.name);
+    fs.writeFileSync(rdmDst, template(rdmSrc)(opts));
+    licenseTxt && fs.writeFileSync(path.resolve(rootPath, 'LICENSE'), licenseTxt);
+    // Add .gitignore if doesn't exists yet
+    // Check also package.json if exists
 };
 
 const createFileComponents = (opts = {}) => {
@@ -26,7 +40,7 @@ const updatePackage = (opts = {}) => {
 };
 
 export const initPlugin = async(opts = {}) => {
-    printRow('Start file creation...');
+    printRow('Start project creation...');
     const tasks = new Listr([
         {
             title: 'Creating initial source files',
@@ -58,6 +72,7 @@ export default async (opts = {}) => {
         yes,
         components,
         blocks,
+        license,
     } = opts;
     let results = {
         name: name || getName(rootDir),
@@ -65,6 +80,7 @@ export default async (opts = {}) => {
         user: user || 'YOUR-USERNAME',
         components: components || true,
         blocks: blocks || true,
+        license: license || 'MIT',
     };
 
     const questions = [];
@@ -96,6 +112,11 @@ export default async (opts = {}) => {
             name: 'blocks',
             message: 'Will you need to add Blocks?',
             default: results.blocks,
+        });
+        !license && questions.push({
+            name: 'license',
+            message: 'License of the project',
+            default: results.license,
         });
     }
 

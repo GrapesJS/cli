@@ -110,6 +110,10 @@ export const createCommands = (yargs) => {
             describe: 'Indicate to include blocks API',
             type: 'boolean',
         })
+        .positional('license', {
+            describe: 'License of the project',
+            type: 'string',
+        })
     }, (argv) => init(argv))
     .options({
         verbose: {
