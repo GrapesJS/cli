@@ -101,6 +101,12 @@ Start the dev server
 $ npm start
 ```
 
+Build the source
+
+```sh
+$ npm run build
+```
+
 
 
 ## License

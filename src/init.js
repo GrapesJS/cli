@@ -5,6 +5,7 @@ import path from 'path';
 import fs from 'fs';
 import spdxLicenseList from 'spdx-license-list/full';
 import template from 'lodash.template';
+import { version } from '../package.json';
 
 const tmpPath = './template';
 const rootPath = process.cwd();
@@ -69,7 +70,14 @@ const createFileBlocks = (opts = {}) => {
     opts.blocks && fs.copyFileSync(blkSrc, blkDst);
 };
 
-const updatePackage = (opts = {}) => {
+const createPackage = (opts = {}) => {
+    const filepath = 'package.json';
+    const cnt = getTemplateFileContent(filepath);
+    const dst = resolveRoot(filepath);
+    fs.writeFileSync(dst, template(cnt)({
+        ...opts,
+        version,
+    }));
 };
 
 export const initPlugin = async(opts = {}) => {
@@ -88,7 +96,7 @@ export const initPlugin = async(opts = {}) => {
             enabled: () => opts.components,
         }, {
             title: 'Update package.json',
-            task: () => updatePackage(opts),
+            task: () => createPackage(opts),
         },
     ]);
     await tasks.run();
