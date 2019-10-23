@@ -2,6 +2,8 @@
 
 <span><a href="https://david-dm.org/artf/grapesjs-cli#info=dependencies"><img src="https://img.shields.io/david/artf/grapesjs-cli.svg" alt="Dependency Status" /></a></span>
 
+![grapesjs-cli](https://user-images.githubusercontent.com/11614725/67439551-d113b380-f5f6-11e9-8813-1af4b7715ba4.png)
+
 
 A simple CLI library for helping in GrapesJS plugin development.
 
