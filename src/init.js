@@ -20,12 +20,15 @@ const createSourceFiles = async (opts = {}) => {
     const rmdPath = path.resolve(__dirname, `${tmpPath}/README.md`);
     const rdmSrc = fs.readFileSync(rmdPath, 'utf8');
     const rdmDst = path.resolve(rootPath, 'README.md');
+    const ignSrc = path.resolve(__dirname, `${tmpPath}/.gitignore`);
+    const ignDst = path.resolve(rootPath, '.gitignore');
     const license = spdxLicenseList[opts.license];
     const licenseTxt = license && (license.licenseText || '')
         .replace('<year>', `${new Date().getFullYear()}-current`)
         .replace('<copyright holders>', opts.name);
     fs.writeFileSync(rdmDst, template(rdmSrc)(opts));
     licenseTxt && fs.writeFileSync(path.resolve(rootPath, 'LICENSE'), licenseTxt);
+    !fs.existsSync(ignDst) && fs.copyFileSync(ignSrc, ignDst);
     // Add .gitignore if doesn't exists yet
     // Check also package.json if exists
 };

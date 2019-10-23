@@ -5,7 +5,7 @@
 
 ## Summary
 
-* Plugin name: `{RNAME}`
+* Plugin name: `<%= rName %>`
 * Components
     * `component-id-1`
     * `component-id-2`
@@ -28,11 +28,11 @@
 ## Download
 
 * CDN
-  * `https://unpkg.com/{RNAME}`
+  * `https://unpkg.com/<%= rName %>`
 * NPM
-  * `npm i {RNAME}`
+  * `npm i <%= rName %>`
 * GIT
-  * `git clone https://github.com/{USER}/{RNAME}.git`
+  * `git clone https://github.com/<%= user %>/<%= rName %>.git`
 
 
 
@@ -42,7 +42,7 @@ Directly in the browser
 ```html
 <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet"/>
 <script src="https://unpkg.com/grapesjs"></script>
-<script src="path/to/{RNAME}.min.js"></script>
+<script src="path/to/<%= rName %>.min.js"></script>
 
 <div id="gjs"></div>
 
@@ -50,9 +50,9 @@ Directly in the browser
   var editor = grapesjs.init({
       container: '#gjs',
       // ...
-      plugins: ['{RNAME}'],
+      plugins: ['<%= rName %>'],
       pluginsOpts: {
-        '{RNAME}': { /* options */ }
+        '<%= rName %>': { /* options */ }
       }
   });
 </script>
@@ -61,19 +61,19 @@ Directly in the browser
 Modern javascript
 ```js
 import grapesjs from 'grapesjs';
-import yourPluginName from '{RNAME}';
+import plugin from '<%= rName %>';
 import 'grapesjs/dist/css/grapes.min.css';
 
 const editor = grapesjs.init({
   container : '#gjs',
   // ...
-  plugins: [yourPluginName],
+  plugins: [plugin],
   pluginsOpts: {
-    [yourPluginName]: { /* options */ }
+    [plugin]: { /* options */ }
   }
   // or
   plugins: [
-    editor => yourPluginName(editor, { /* options */ }),
+    editor => plugin(editor, { /* options */ }),
   ],
 });
 ```
@@ -85,8 +85,8 @@ const editor = grapesjs.init({
 Clone the repository
 
 ```sh
-$ git clone https://github.com/{USER}/{RNAME}.git
-$ cd {RNAME}
+$ git clone https://github.com/<%= user %>/<%= rName %>.git
+$ cd <%= rName %>
 ```
 
 Install dependencies
