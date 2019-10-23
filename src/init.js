@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import { printRow, printError, isUndefined } from './utils';
+import { printRow, printError, isUndefined, log, ensureDir } from './utils';
 import Listr from 'listr';
 import path from 'path';
 import fs from 'fs';
@@ -7,6 +7,7 @@ import spdxLicenseList from 'spdx-license-list/full';
 import template from 'lodash.template';
 
 const tmpPath = './template';
+const rootPath = process.cwd();
 
 const getName = str => str
     .replace(/\_/g, '-')
@@ -15,22 +16,41 @@ const getName = str => str
     .map(i => i[0].toUpperCase() + i.slice(1))
     .join(' ');
 
+const getTemplateFileContent = pth => {
+    const pt = path.resolve(__dirname, `${tmpPath}/${pth}`);
+    return fs.readFileSync(pt, 'utf8');
+};
+
+const resolveRoot = pth => {
+    return path.resolve(rootPath, pth);
+};
+
+const resolveLocal = pth => {
+    return path.resolve(__dirname, `${tmpPath}/${pth}`);
+};
+
 const createSourceFiles = async (opts = {}) => {
-    const rootPath = process.cwd();
-    const rmdPath = path.resolve(__dirname, `${tmpPath}/README.md`);
-    const rdmSrc = fs.readFileSync(rmdPath, 'utf8');
-    const rdmDst = path.resolve(rootPath, 'README.md');
-    const ignSrc = path.resolve(__dirname, `${tmpPath}/.gitignore`);
-    const ignDst = path.resolve(rootPath, '.gitignore');
+    const rdmSrc = getTemplateFileContent('README.md')
+    const rdmDst = resolveRoot('README.md');
+    const ignSrc = resolveLocal('.gitignore');
+    const ignDst = resolveRoot('.gitignore');
+    const indxSrc = getTemplateFileContent('src/index.js');
+    const indxDst = resolveRoot('src/index.js');
+    const cmpSrc = resolveLocal('src/components.js');
+    const cmpDst = resolveRoot('src/components.js');
+    const blkSrc = resolveLocal('src/blocks.js');
+    const blkDst = resolveRoot('src/blocks.js');
     const license = spdxLicenseList[opts.license];
     const licenseTxt = license && (license.licenseText || '')
         .replace('<year>', `${new Date().getFullYear()}-current`)
         .replace('<copyright holders>', opts.name);
     fs.writeFileSync(rdmDst, template(rdmSrc)(opts));
-    licenseTxt && fs.writeFileSync(path.resolve(rootPath, 'LICENSE'), licenseTxt);
+    licenseTxt && fs.writeFileSync(resolveRoot('LICENSE'), licenseTxt);
     !fs.existsSync(ignDst) && fs.copyFileSync(ignSrc, ignDst);
-    // Add .gitignore if doesn't exists yet
-    // Check also package.json if exists
+    ensureDir(indxDst);
+    fs.writeFileSync(indxDst, template(indxSrc)(opts).trim());
+    opts.components && fs.copyFileSync(cmpSrc, cmpDst);
+    opts.blocks && fs.copyFileSync(blkSrc, blkDst);
 };
 
 const createFileComponents = (opts = {}) => {
@@ -65,8 +85,8 @@ export const initPlugin = async(opts = {}) => {
 }
 
 export default async (opts = {}) => {
-    printRow('Init the project...');
     const rootDir = path.basename(process.cwd());
+    const questions = [];
     const {
         verbose,
         name,
@@ -81,12 +101,11 @@ export default async (opts = {}) => {
         name: name || getName(rootDir),
         rName: rName || rootDir,
         user: user || 'YOUR-USERNAME',
-        components: components || true,
-        blocks: blocks || true,
+        components: isUndefined(components) ? true : components,
+        blocks: isUndefined(blocks) ? true : blocks,
         license: license || 'MIT',
     };
-
-    const questions = [];
+    printRow(`Init the project${verbose ? ' (verbose)' : ''}...`);
 
     if (!yes) {
         !name && questions.push({
@@ -129,6 +148,7 @@ export default async (opts = {}) => {
         ...answers,
     }
 
+    verbose && log({ results, opts });
     await initPlugin(results);
     printRow('Project created! Happy coding');
 }

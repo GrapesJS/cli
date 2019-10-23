@@ -1,4 +1,6 @@
 import chalk from 'chalk';
+import path from 'path';
+import fs from 'fs';
 
 export const printRow = (str, {
     color = 'green',
@@ -14,3 +16,12 @@ export const printError = str => {
 }
 
 export const isUndefined = value => typeof value === 'undefined';
+
+export const log = (...args) => console.log.apply(this, args);
+
+export const ensureDir = filePath => {
+    const dirname = path.dirname(filePath);
+    if (fs.existsSync(dirname)) return true;
+    fs.mkdirSync(dirname);
+    return ensureDir(dirname);
+}
