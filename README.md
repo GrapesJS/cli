@@ -48,7 +48,7 @@ npx grapesjs-cli init -y --user=YOUR-GITHUB-USERNAME
 ```
 
 
-* The command will scaffold the `src` directory and a bunch of other files inside your project. The `src/index.js` will be the entry point of your plugin. Before starting developing your plugin run the development server and follow the printed URL (eg. the default is http://localhost:8080)
+* The command will scaffold the `src` directory and a bunch of other files inside your project. The `src/index.js` will be the entry point of your plugin. Before starting developing your plugin run the development server and open the printed URL (eg. the default is http://localhost:8080)
 
 ```sh
 npx grapesjs-cli serve
