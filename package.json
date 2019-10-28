@@ -1,6 +1,6 @@
 {
   "name": "grapesjs-cli",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "GrapesJS CLI tool for the development",
   "main": "src/index.js",
   "bin": "bin/grapesjs-cli",
