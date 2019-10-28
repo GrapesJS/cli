@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserWebpackPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
@@ -47,6 +48,15 @@ module.exports = (opts = {}) => {
     entry: path.resolve(dirCwd, args.entry),
     mode: isProd ? 'production' : 'development',
     devtool: isProd ? 'source-map' : 'cheap-module-eval-source-map',
+    optimization: {
+      minimizer: [new TerserWebpackPlugin({
+        sourceMap: true,
+        terserOptions: {
+          // Preserve original quotes
+          output: { quote_style: 3 }
+        }
+      })],
+    },
     output: {
         path: path.resolve(dirCwd, args.output),
         filename: `${name}.min.js`,
