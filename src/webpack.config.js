@@ -1,6 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserWebpackPlugin = require('terser-webpack-plugin');
-const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 const fs = require('fs');
 const dirCwd = process.cwd();
@@ -12,12 +11,9 @@ module.exports = (opts = {}) => {
   const { htmlWebpack = {} } = args;
   const name = pkg.name;
   const isProd = opts.production;
+  const banner = `/*! ${name} - ${pkg.version} */`;
 
-  if (isProd) {
-    plugins = [
-      new webpack.BannerPlugin(`${name} - ${pkg.version}`),
-    ]
-  } else {
+  if (!isProd) {
     const fname = 'index.html';
     const index = `${dirCwd}/${fname}`;
     const indexDev = `${dirCwd}/_${fname}`;
@@ -49,11 +45,13 @@ module.exports = (opts = {}) => {
     mode: isProd ? 'production' : 'development',
     devtool: isProd ? 'source-map' : 'cheap-module-eval-source-map',
     optimization: {
-      minimizer: [new TerserWebpackPlugin({
+      minimizer: [new TerserPlugin({
         sourceMap: true,
         terserOptions: {
-          // Preserve original quotes
-          output: { quote_style: 3 }
+          output: {
+            quote_style: 3, // Preserve original quotes
+            preamble: banner, // banner here instead of BannerPlugin
+          }
         }
       })],
     },
