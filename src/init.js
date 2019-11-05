@@ -70,6 +70,14 @@ const createFileBlocks = (opts = {}) => {
     opts.blocks && fs.copyFileSync(blkSrc, blkDst);
 };
 
+const createI18n = (opts = {}) => {
+    const enPath = 'src/locale/en.js';
+    const tmpEn = getTemplateFileContent(enPath);
+    const dstEn = resolveRoot(enPath);
+    ensureDir(dstEn);
+    fs.writeFileSync(dstEn, template(tmpEn)(opts));
+};
+
 const createPackage = (opts = {}) => {
     const filepath = 'package.json';
     const cnt = getTemplateFileContent(filepath);
@@ -93,7 +101,11 @@ export const initPlugin = async(opts = {}) => {
         }, {
             title: 'Creating Blocks file',
             task: () => createFileBlocks(opts),
-            enabled: () => opts.components,
+            enabled: () => opts.blocks,
+        }, {
+            title: 'Creating i18n structure',
+            task: () => createI18n(opts),
+            enabled: () => opts.i18n,
         }, {
             title: 'Update package.json',
             task: () => createPackage(opts),
@@ -113,6 +125,7 @@ export default async (opts = {}) => {
         yes,
         components,
         blocks,
+        i18n,
         license,
     } = opts;
     let results = {
@@ -121,6 +134,7 @@ export default async (opts = {}) => {
         user: user || 'YOUR-USERNAME',
         components: isUndefined(components) ? true : components,
         blocks: isUndefined(blocks) ? true : blocks,
+        i18n: isUndefined(i18n) ? true : i18n,
         license: license || 'MIT',
     };
     printRow(`Init the project${verbose ? ' (verbose)' : ''}...`);
@@ -152,6 +166,12 @@ export default async (opts = {}) => {
             name: 'blocks',
             message: 'Will you need to add Blocks?',
             default: results.blocks,
+        });
+        isUndefined(i18n) && questions.push({
+            type: 'boolean',
+            name: 'i18n',
+            message: 'Do you want to setup i18n structure in this plugin?',
+            default: results.i18n,
         });
         !license && questions.push({
             name: 'license',

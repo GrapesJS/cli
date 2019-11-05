@@ -110,6 +110,10 @@ export const createCommands = (yargs) => {
             describe: 'Indicate to include blocks API',
             type: 'boolean',
         })
+        .positional('i18n', {
+            describe: 'Indicate to include the support for i18n',
+            type: 'boolean',
+        })
         .positional('license', {
             describe: 'License of the project',
             type: 'string',
