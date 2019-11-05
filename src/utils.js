@@ -57,3 +57,19 @@ export const buildWebpackArgs = opts => {
         htmlWebpack: normalizeJsonOpt(opts, 'htmlWebpack'),
     }
 }
+
+export const copyRecursiveSync = (src, dest) => {
+    const exists = fs.existsSync(src);
+    const isDir = exists && fs.statSync(src).isDirectory();
+
+    if (isDir) {
+        fs.mkdirSync(dest);
+        fs.readdirSync(src).forEach((file) => {
+            copyRecursiveSync(path.join(src, file), path.join(dest, file));
+        });
+    } else if (exists) {
+        fs.createReadStream(src).pipe(fs.createWriteStream(dest));
+    }
+};
+
+export const rootResolve = val => path.resolve(process.cwd(), val);

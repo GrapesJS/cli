@@ -1,8 +1,41 @@
-import { printRow, printError, buildWebpackArgs, log, normalizeJsonOpt } from './utils';
+import {
+    printRow,
+    printError,
+    buildWebpackArgs,
+    normalizeJsonOpt,
+    copyRecursiveSync,
+    rootResolve,
+    log,
+} from './utils';
 import webpack from 'webpack';
+import fs from 'fs';
 import webpackConfig from './webpack.config';
 import { exec } from 'child_process';
 import chalk from 'chalk';
+import { promisify } from 'util';
+
+const execp = promisify(exec);
+
+export const buildLocale = async (opts = {}) => {
+    if (!fs.existsSync(rootResolve('src/locale'))) return;
+    printRow('Start building locale files...');
+
+    await execp('rm -rf locale');
+
+    const localDst = rootResolve('locale');
+    copyRecursiveSync(rootResolve('src/locale'), localDst);
+
+    // Create locale/index.js file
+    let result = '';
+    fs.readdirSync(localDst).forEach(file => {
+        const name = file.replace('.js', '');
+        result += `export { default as ${name} } from './${name}'\n`;
+    });
+    fs.writeFileSync(`${localDst}/index.js`, result);
+
+    await execp('babel locale -d locale --copy-files --no-comments');
+    printRow('Locale files building completed successfully!');
+}
 
 /**
  * Build the library files
@@ -14,6 +47,7 @@ export default (opts = {}) => {
     isVerb && log(chalk.yellow('Build config:\n'), opts, '\n');
 
     const buildWebpack = () => {
+        return buildLocale(opts);
         const buildConf = {
             ...webpackConfig({
                 production: 1,
@@ -40,7 +74,7 @@ export default (opts = {}) => {
 
             errors ?
                 printError('Error during building') :
-                printRow('Building completed successfully');
+                printRow('Building completed successfully!');
         });
     };
 

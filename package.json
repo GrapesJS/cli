@@ -21,6 +21,7 @@
   "author": "Artur Arseniev",
   "license": "BSD-3-Clause",
   "dependencies": {
+    "@babel/cli": "^7.7.0",
     "@babel/core": "^7.6.4",
     "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.6.3",
