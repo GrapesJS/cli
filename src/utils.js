@@ -2,6 +2,8 @@ import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
 
+export const isString = val => typeof val === 'string';
+
 export const printRow = (str, {
     color = 'green',
     lineDown = 1,
@@ -24,4 +26,34 @@ export const ensureDir = filePath => {
     if (fs.existsSync(dirname)) return true;
     fs.mkdirSync(dirname);
     return ensureDir(dirname);
+}
+
+/**
+ * Normalize JSON options
+ * @param {Object} opts Options
+ * @param {String} key Options name to normalize
+ * @returns {Object}
+ */
+export const normalizeJsonOpt = (opts, key) => {
+    let devServerOpt = opts[key] || {};
+
+    if (isString(devServerOpt)) {
+        try {
+            devServerOpt = JSON.parse(devServerOpt);
+        } catch (e) {
+            printError(`Error while parsing "${key}" option`);
+            printError(e);
+            devServerOpt = {}
+        }
+    }
+
+    return devServerOpt;
+}
+
+export const buildWebpackArgs = opts => {
+    return {
+        ...opts,
+        babel: normalizeJsonOpt(opts, 'babel'),
+        htmlWebpack: normalizeJsonOpt(opts, 'htmlWebpack'),
+    }
 }

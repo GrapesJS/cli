@@ -1,6 +1,6 @@
 <% if(components){ %>import loadComponents from './components';<% } %>
 <% if(blocks){ %>import loadBlocks from './blocks';<% } %>
-<% if(i18n){ %>import en from 'locale/en';<% } %>
+<% if(i18n){ %>import en from './locale/en';<% } %>
 
 export default (editor, opts = {}) => {
   const options = { ...{

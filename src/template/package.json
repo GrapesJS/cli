@@ -9,7 +9,8 @@
   },
   "scripts": {
     "start": "grapesjs-cli serve",
-    "build": "grapesjs-cli build",
+    "build:locale": "grapesjs-cli build-locale",
+    "build": "grapesjs-cli build && npm run build:locale",
     "bump": "npm version patch -m 'Bump v%s'"
   },
   "keywords": [
