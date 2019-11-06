@@ -5,6 +5,7 @@ import {
     normalizeJsonOpt,
     copyRecursiveSync,
     rootResolve,
+    babelConfig,
     log,
 } from './utils';
 import webpack from 'webpack';
@@ -13,12 +14,13 @@ import webpackConfig from './webpack.config';
 import { exec } from 'child_process';
 import chalk from 'chalk';
 import { promisify } from 'util';
+import { transformFileSync } from '@babel/core';
 
 const execp = promisify(exec);
 
 export const buildLocale = async (opts = {}) => {
     if (!fs.existsSync(rootResolve('src/locale'))) return;
-    printRow('Start building locale files...');
+    printRow('Start building locale files...', { lineDown: 0 });
 
     await execp('rm -rf locale');
 
@@ -33,7 +35,19 @@ export const buildLocale = async (opts = {}) => {
     });
     fs.writeFileSync(`${localDst}/index.js`, result);
 
-    await execp('babel locale -d locale --copy-files --no-comments');
+    // Compile files
+    const babelOpts = {
+        ...babelConfig(buildWebpackArgs(opts)),
+        babelrc: false,
+        configFile: false,
+    };
+    fs.readdirSync(localDst).forEach(file => {
+        const filePath = `${localDst}/${file}`;
+        const compiled = transformFileSync(filePath, babelOpts).code;
+        console.log('COMPILE: ', filePath);
+        fs.writeFileSync(filePath, compiled);
+    });
+
     printRow('Locale files building completed successfully!');
 }
 
@@ -47,7 +61,6 @@ export default (opts = {}) => {
     isVerb && log(chalk.yellow('Build config:\n'), opts, '\n');
 
     const buildWebpack = () => {
-        return buildLocale(opts);
         const buildConf = {
             ...webpackConfig({
                 production: 1,
@@ -57,7 +70,7 @@ export default (opts = {}) => {
         };
 
         isVerb && log(chalk.yellow('Webpack config:\n'), buildConf, '\n');
-        webpack(buildConf, (err, stats) => {
+        webpack(buildConf, async (err, stats) => {
             const errors = err || stats.hasErrors();
             const statConf = {
                 hash: false,
@@ -71,6 +84,7 @@ export default (opts = {}) => {
             isVerb && log(chalk.yellow('Stats config:\n'), statConf, '\n');
             const result = stats.toString(statConf);
             log(result, '\n');
+            await buildLocale(opts);
 
             errors ?
                 printError('Error during building') :

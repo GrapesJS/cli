@@ -73,3 +73,14 @@ export const copyRecursiveSync = (src, dest) => {
 };
 
 export const rootResolve = val => path.resolve(process.cwd(), val);
+
+export const babelConfig = (opts = {}) => ({
+    presets: [
+        [ '@babel/preset-env', {
+            targets: opts.targets,
+            // useBuiltIns: 'usage', // this makes the build much bigger
+            // corejs: 3,
+        } ]
+    ],
+    plugins: [ '@babel/plugin-transform-runtime' ],
+})

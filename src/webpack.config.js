@@ -1,11 +1,13 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const path = require('path');
-const fs = require('fs');
+import { babelConfig } from './utils';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
+import path from 'path';
+import fs from 'fs';
+
 const dirCwd = process.cwd();
 let plugins = [];
 
-module.exports = (opts = {}) => {
+export default (opts = {}) => {
   const pkg = require(`${dirCwd}/package.json`);
   const { args } = opts;
   const { htmlWebpack = {} } = args;
@@ -67,14 +69,7 @@ module.exports = (opts = {}) => {
           loader: 'babel-loader',
           include: /src/,
           options: {
-            presets: [
-              [ require('@babel/preset-env'), {
-                targets: args.targets,
-                // useBuiltIns: 'usage', // this makes the build much bigger
-                // corejs: 3,
-              } ]
-            ],
-            plugins: [ require('@babel/plugin-transform-runtime') ],
+            ...babelConfig(args),
             cacheDirectory: true,
             ...args.babel,
           },
