@@ -18,6 +18,10 @@ import { transformFileSync } from '@babel/core';
 
 const execp = promisify(exec);
 
+/**
+ * Build locale files
+ * @param {Object} opts
+ */
 export const buildLocale = async (opts = {}) => {
     if (!fs.existsSync(rootResolve('src/locale'))) return;
     printRow('Start building locale files...', { lineDown: 0 });
@@ -36,15 +40,10 @@ export const buildLocale = async (opts = {}) => {
     fs.writeFileSync(`${localDst}/index.js`, result);
 
     // Compile files
-    const babelOpts = {
-        ...babelConfig(buildWebpackArgs(opts)),
-        babelrc: false,
-        configFile: false,
-    };
+    const babelOpts = { ...babelConfig(buildWebpackArgs(opts)) };
     fs.readdirSync(localDst).forEach(file => {
         const filePath = `${localDst}/${file}`;
         const compiled = transformFileSync(filePath, babelOpts).code;
-        console.log('COMPILE: ', filePath);
         fs.writeFileSync(filePath, compiled);
     });
 

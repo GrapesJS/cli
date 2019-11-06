@@ -68,7 +68,7 @@ export const copyRecursiveSync = (src, dest) => {
             copyRecursiveSync(path.join(src, file), path.join(dest, file));
         });
     } else if (exists) {
-        fs.createReadStream(src).pipe(fs.createWriteStream(dest));
+        fs.copyFileSync(src, dest);
     }
 };
 
