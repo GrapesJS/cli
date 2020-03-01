@@ -72,7 +72,7 @@ npx grapesjs-cli serve --devServer='{"https": true}'
 grapesjs-cli build
 ```
 
-* Before publishing your package remember to complete your REDAME.md file with all the available options, components, blocks and so on.
+* Before publishing your package remember to complete your README.md file with all the available options, components, blocks and so on.
 For a better user engagement create a simple live demo by using services like [JSFiddle](https://jsfiddle.net) [CodeSandbox](https://codesandbox.io) [CodePen](https://codepen.io) and link it in your README. To help you in this process we'll print all the necessary HTML/CSS/JS in your README, so it will be just a matter of copy-pasting on some of those services.
 
 
