@@ -29,7 +29,7 @@
     "chalk": "^3.0.0",
     "core-js": "^3.6.5",
     "esm": "^3.2.25",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^4.5.0",
     "inquirer": "^7.3.3",
     "listr": "^0.14.3",
     "lodash.template": "^4.5.0",
