@@ -50,6 +50,9 @@ export default (opts = {}) => {
       minimizer: [new TerserPlugin({
         sourceMap: true,
         terserOptions: {
+          compress: {
+            evaluate: false, // Avoid breaking gjs scripts
+          },
           output: {
             quote_style: 3, // Preserve original quotes
             preamble: banner, // banner here instead of BannerPlugin
