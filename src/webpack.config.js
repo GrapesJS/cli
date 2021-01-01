@@ -1,6 +1,7 @@
-import { babelConfig, rootResolve, isFunction, isObject } from './utils';
+import { babelConfig, rootResolve, isFunction, isObject, log } from './utils';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
+import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
 
@@ -9,7 +10,7 @@ let plugins = [];
 
 export default (opts = {}) => {
   const pkg = require(`${dirCwd}/package.json`);
-  const { args } = opts;
+  const { args, cmdOpts = {} } = opts;
   const { htmlWebpack = {} } = args;
   const name = pkg.name;
   const isProd = opts.production;
@@ -88,6 +89,8 @@ export default (opts = {}) => {
       const fnRes = localWebpackConf({ config });
       config = isObject(fnRes) ? fnRes : config;
   }
+
+  cmdOpts.verbose && log(chalk.yellow('Webpack config:\n'), config, '\n');
 
   return config;
 }

@@ -64,11 +64,11 @@ export default (opts = {}) => {
             ...webpackConfig({
                 production: 1,
                 args: buildWebpackArgs(opts),
+                cmdOpts: opts,
             }),
             ...normalizeJsonOpt(opts, 'config'),
         };
 
-        isVerb && log(chalk.yellow('Webpack config:\n'), buildConf, '\n');
         webpack(buildConf, async (err, stats) => {
             const errors = err || stats.hasErrors();
             const statConf = {

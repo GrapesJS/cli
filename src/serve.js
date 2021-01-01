@@ -13,7 +13,7 @@ export default (opts = {}) => {
     const { host, port } = opts;
     const isVerb = opts.verbose;
     const resultWebpackConf = {
-        ...webpackConfig({ args: buildWebpackArgs(opts) }),
+        ...webpackConfig({ args: buildWebpackArgs(opts), cmdOpts: opts }),
         ...normalizeJsonOpt(opts, 'webpack'),
     };
     const devServerConf = {
@@ -24,7 +24,6 @@ export default (opts = {}) => {
 
     if (isVerb) {
         log(chalk.yellow('Server config:\n'), opts, '\n');
-        log(chalk.yellow('Webpack config:\n'), resultWebpackConf, '\n');
         log(chalk.yellow('DevServer config:\n'), devServerConf, '\n');
     }
 
