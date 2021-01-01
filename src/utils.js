@@ -4,6 +4,12 @@ import fs from 'fs';
 
 export const isString = val => typeof val === 'string';
 
+export const isUndefined = value => typeof value === 'undefined';
+
+export const isFunction = value => typeof value === 'function';
+
+export const isObject = val => val !== null && !Array.isArray(val) && typeof val === 'object';
+
 export const printRow = (str, {
     color = 'green',
     lineDown = 1,
@@ -16,8 +22,6 @@ export const printRow = (str, {
 export const printError = str => {
     printRow(str, { color: 'red' });
 }
-
-export const isUndefined = value => typeof value === 'undefined';
 
 export const log = (...args) => console.log.apply(this, args);
 

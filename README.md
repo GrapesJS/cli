@@ -79,6 +79,30 @@ For a better user engagement create a simple live demo by using services like [J
 
 
 
+## Customization
+
+### Customize webpack config
+
+If you need to customize the webpack configuration, you can create `webpack.config.js` file in the root dir of your project and export a function, which should return the new configuration object. Check the example below.
+```js
+// YOUR-PROJECT-DIR/webpack.config.js
+
+// config is the default configuration
+export default ({ config }) => {
+    // This is how you can distinguish the `build` command from the `serve`
+    const isBuild = config.mode === 'production';
+
+    return {
+        ...config,
+        module: {
+            rules: [ { /* extra rule */ }, ...config.module.rules ],
+        },
+    };
+}
+```
+
+
+
 ## Generic CLI usage
 
 Show all available commands

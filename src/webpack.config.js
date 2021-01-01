@@ -1,4 +1,4 @@
-import { babelConfig } from './utils';
+import { babelConfig, rootResolve, isFunction, isObject } from './utils';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import path from 'path';
@@ -42,7 +42,7 @@ export default (opts = {}) => {
     }));
   }
 
-  return {
+  let config = {
     entry: path.resolve(dirCwd, args.entry),
     mode: isProd ? 'production' : 'development',
     devtool: isProd ? 'source-map' : 'cheap-module-eval-source-map',
@@ -80,4 +80,14 @@ export default (opts = {}) => {
     },
     plugins: plugins,
   };
+
+  // Try to load local webpack config
+  const localWebpackPath = rootResolve('webpack.config.js');
+  const localWebpackConf = fs.existsSync(localWebpackPath) ? require(localWebpackPath).default : 0;
+  if (isFunction(localWebpackConf)) {
+      const fnRes = localWebpackConf({ config });
+      config = isObject(fnRes) ? fnRes : config;
+  }
+
+  return config;
 }
