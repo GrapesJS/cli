@@ -79,7 +79,8 @@ export default (opts = {}) => {
                 modules: false,
                 ...normalizeJsonOpt(opts, 'stats'),
             };
-
+            opts.statsOutput && stats &&
+                fs.writeFileSync(rootResolve(opts.statsOutput), JSON.stringify(stats.toJson()));
             isVerb && log(chalk.yellow('Stats config:\n'), statConf, '\n');
             const result = stats.toString(statConf);
             log(result, '\n');

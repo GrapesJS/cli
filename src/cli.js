@@ -75,6 +75,11 @@ export const createCommands = (yargs) => {
             type: 'string',
             default: '{}',
         })
+        .positional('statsOutput', {
+            describe: 'Specify the path where to output webpack stats file (eg. "stats.json")',
+            type: 'string',
+            default: '',
+        })
         .positional('patch', {
             describe: 'Increase automatically the patch version',
             type: 'boolean',
