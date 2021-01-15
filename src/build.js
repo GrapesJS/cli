@@ -13,10 +13,11 @@ import fs from 'fs';
 import webpackConfig from './webpack.config';
 import { exec } from 'child_process';
 import chalk from 'chalk';
+import rimraf from 'rimraf'
 import { promisify } from 'util';
 import { transformFileSync } from '@babel/core';
 
-const execp = promisify(exec);
+const rimrafAsync = promisify(rimraf);
 
 /**
  * Build locale files
@@ -26,7 +27,7 @@ export const buildLocale = async (opts = {}) => {
     if (!fs.existsSync(rootResolve('src/locale'))) return;
     printRow('Start building locale files...', { lineDown: 0 });
 
-    await execp('rm -rf locale');
+    await rimrafAsync('locale');
 
     const localDst = rootResolve('locale');
     copyRecursiveSync(rootResolve('src/locale'), localDst);
