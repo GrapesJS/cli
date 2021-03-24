@@ -84,6 +84,11 @@ export const createCommands = (yargs) => {
             describe: 'Increase automatically the patch version',
             type: 'boolean',
             default: true,
+        })
+        .positional('localePath', {
+            describe: 'Path to the directory containing locale files',
+            type: 'string',
+            default: 'src/locale',
         });
         webpackOptions(yargs);
     }, (argv) => build(argv))

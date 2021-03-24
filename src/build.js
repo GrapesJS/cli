@@ -24,13 +24,14 @@ const rimrafAsync = promisify(rimraf);
  * @param {Object} opts
  */
 export const buildLocale = async (opts = {}) => {
-    if (!fs.existsSync(rootResolve('src/locale'))) return;
+    const { localePath } = opts;
+    if (!fs.existsSync(rootResolve(localePath))) return;
     printRow('Start building locale files...', { lineDown: 0 });
 
     await rimrafAsync('locale');
 
     const localDst = rootResolve('locale');
-    copyRecursiveSync(rootResolve('src/locale'), localDst);
+    copyRecursiveSync(rootResolve(localePath), localDst);
 
     // Create locale/index.js file
     let result = '';
