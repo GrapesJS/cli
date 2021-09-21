@@ -66,6 +66,7 @@ export default (opts = {}) => {
         filename: `${name}.min.js`,
         library: name,
         libraryTarget: 'umd',
+        globalObject: `typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : this)`,
     },
     module: {
       rules: [{
