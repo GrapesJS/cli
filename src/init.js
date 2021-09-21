@@ -88,6 +88,8 @@ const createPackage = (opts = {}) => {
     }));
 };
 
+const checkBoolean = value => value && value !== 'false' ? true : false;
+
 export const initPlugin = async(opts = {}) => {
     printRow('Start project creation...');
     const tasks = new Listr([
@@ -97,15 +99,15 @@ export const initPlugin = async(opts = {}) => {
         }, {
             title: 'Creating custom Component Type file',
             task: () => createFileComponents(opts),
-            enabled: () => opts.components,
+            enabled: () => checkBoolean(opts.components),
         }, {
             title: 'Creating Blocks file',
             task: () => createFileBlocks(opts),
-            enabled: () => opts.blocks,
+            enabled: () => checkBoolean(opts.blocks),
         }, {
             title: 'Creating i18n structure',
             task: () => createI18n(opts),
-            enabled: () => opts.i18n,
+            enabled: () => checkBoolean(opts.i18n),
         }, {
             title: 'Update package.json',
             task: () => createPackage(opts),
