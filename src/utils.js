@@ -86,8 +86,5 @@ export const babelConfig = (opts = {}) => ({
             // corejs: 3,
         } ]
     ],
-    plugins: [
-        '@babel/plugin-transform-runtime',
-        ['@babel/plugin-proposal-class-properties', { loose: true }],
-    ],
+    plugins: [ '@babel/plugin-transform-runtime' ],
 })
