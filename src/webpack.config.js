@@ -43,6 +43,11 @@ export default (opts = {}) => {
     }));
   }
 
+  const outPath = path.resolve(dirCwd, args.output);
+  const pathTsConf = rootResolve('tsconfig.json');
+  const tsConfig = fs.existsSync(pathTsConf) ? require(pathTsConf) : {};
+  const optsTsCmpl = tsConfig.compilerOptions || {};
+
   let config = {
     entry: path.resolve(dirCwd, args.entry),
     mode: isProd ? 'production' : 'development',
@@ -62,7 +67,7 @@ export default (opts = {}) => {
       })],
     },
     output: {
-        path: path.resolve(dirCwd, args.output),
+        path: outPath,
         filename: `${name}.min.js`,
         library: name,
         libraryTarget: 'umd',
@@ -70,6 +75,20 @@ export default (opts = {}) => {
     },
     module: {
       rules: [{
+        test: /\.tsx?$/,
+        loader: require.resolve('ts-loader'),
+        exclude: /node_modules/,
+        options: {
+          context: rootResolve(''),
+          configFile: pathTsConf,
+          compilerOptions: {
+            ...(
+              optsTsCmpl.declaration && !optsTsCmpl.declarationDir &&
+              { declarationDir: `${outPath}/types` }
+            )
+          }
+        }
+      }, {
           test: /\.js$/,
           loader: 'babel-loader',
           include: /src/,
@@ -79,6 +98,9 @@ export default (opts = {}) => {
             ...args.babel,
           },
       }],
+    },
+    resolve: {
+      extensions: ['.tsx', '.ts', '.js'],
     },
     plugins: plugins,
   };
