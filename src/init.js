@@ -35,6 +35,8 @@ const createSourceFiles = async (opts = {}) => {
     const rdmDst = resolveRoot('README.md');
     const ignSrc = resolveLocal('.gitignore-t');
     const ignDst = resolveRoot('.gitignore');
+    const ignNpmSrc = resolveLocal('.npmignore-t');
+    const ignNpmDst = resolveRoot('.npmignore');
     const indxSrc = getTemplateFileContent('src/index.js');
     const indxDst = resolveRoot('src/index.js');
     const indexCnt = getTemplateFileContent('_index.html');
@@ -54,6 +56,8 @@ const createSourceFiles = async (opts = {}) => {
     licenseTxt && fs.writeFileSync(resolveRoot('LICENSE'), licenseTxt);
     // copy .gitignore
     fs.copyFileSync(ignSrc, ignDst);
+    // copy .npmignore
+    fs.copyFileSync(ignNpmSrc, ignNpmDst);
 };
 
 const createFileComponents = (opts = {}) => {
