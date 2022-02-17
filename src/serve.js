@@ -22,16 +22,21 @@ export default (opts = {}) => {
         ...normalizeJsonOpt(opts, 'devServer'),
     };
 
+    if (host !== 'localhost') {
+        devServerConf.host = host;
+    }
+
+    if (port !== 8080) {
+        devServerConf.port = port;
+    }
+
     if (isVerb) {
         log(chalk.yellow('Server config:\n'), opts, '\n');
         log(chalk.yellow('DevServer config:\n'), devServerConf, '\n');
     }
 
     const compiler = webpack(resultWebpackConf);
-    const server = new webpackDevServer(compiler, devServerConf);
-    const prot = `http${devServerConf.https ? 's' : ''}`;
+    const server = new webpackDevServer(devServerConf, compiler);
 
-    server.listen(port, host, () => {
-        printRow(`Starting server on ${prot}://${host}:${port}`, { color: 'blue' });
-    });
+    server.start();
 };

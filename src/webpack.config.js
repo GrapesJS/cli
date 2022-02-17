@@ -47,14 +47,14 @@ export default (opts = {}) => {
   const pathTsConf = rootResolve('tsconfig.json');
   const tsConfig = fs.existsSync(pathTsConf) ? require(pathTsConf) : {};
   const optsTsCmpl = tsConfig.compilerOptions || {};
+  const modulesPaths = [ 'node_modules', path.join(__dirname, '../node_modules')];
 
   let config = {
     entry: path.resolve(dirCwd, args.entry),
     mode: isProd ? 'production' : 'development',
-    devtool: isProd ? 'source-map' : 'cheap-module-eval-source-map',
+    devtool: isProd ? 'source-map' : 'eval',
     optimization: {
       minimizer: [new TerserPlugin({
-        sourceMap: true,
         terserOptions: {
           compress: {
             evaluate: false, // Avoid breaking gjs scripts
@@ -90,7 +90,7 @@ export default (opts = {}) => {
         }
       }, {
           test: /\.js$/,
-          loader: 'babel-loader',
+          loader: require.resolve('babel-loader'),
           include: /src/,
           options: {
             ...babelConfig(args),
@@ -101,8 +101,9 @@ export default (opts = {}) => {
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],
+      modules: modulesPaths,
     },
-    plugins: plugins,
+    plugins,
   };
 
   // Try to load local webpack config
