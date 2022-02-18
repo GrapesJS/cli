@@ -8,6 +8,7 @@ import {
     babelConfig,
     log,
 } from './utils';
+import { generateDtsBundle } from "dts-bundle-generator";
 import webpack from 'webpack';
 import fs from 'fs';
 import webpackConfig from './webpack.config';
@@ -53,6 +54,24 @@ export const buildLocale = async (opts = {}) => {
 }
 
 /**
+ * Build TS declaration file
+ * @param {Object} opts
+ */
+ export const buildDeclaration = async (opts = {}) => {
+    const filePath = rootResolve('src/index.ts');
+    if (!fs.existsSync(filePath)) return;
+
+    printRow('Start building TS declaration file...', { lineDown: 0 });
+
+    const entry = { filePath, output: { noBanner: true }};
+    const bundleOptions = { preferredConfigPath: rootResolve('tsconfig.json') };
+    const result = generateDtsBundle([entry], bundleOptions)[0];
+    fs.writeFileSync(rootResolve('dist/index.d.ts'), result);
+
+    printRow('TS declaration file building completed successfully!');
+ }
+
+/**
  * Build the library files
  * @param {Object} opts
  */
@@ -87,6 +106,7 @@ export default (opts = {}) => {
             const result = stats.toString(statConf);
             log(result, '\n');
             await buildLocale(opts);
+            await buildDeclaration(opts);
 
             errors ?
                 printError('Error during building') :
