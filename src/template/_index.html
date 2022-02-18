@@ -24,18 +24,21 @@
 
 
     <script type="text/javascript">
-      window.editor = grapesjs.init({
-        height: '100%',
-        container: '#gjs',
-        showOffsets: true,
-        fromElement: true,
-        noticeOnUnload: false,
-        storageManager: false,
-        plugins: ['<%= rName %>'],
-        pluginsOpts: {
-          '<%= rName %>': { /* Test here your options  */ }
-        }
-      });
+      // Wait for the plugin to be injected by the dev server
+      setTimeout(() => {
+        window.editor = grapesjs.init({
+          height: '100%',
+          container: '#gjs',
+          showOffsets: true,
+          fromElement: true,
+          noticeOnUnload: false,
+          storageManager: false,
+          plugins: ['<%= rName %>'],
+          pluginsOpts: {
+            '<%= rName %>': { /* Test here your options  */ }
+          }
+        });
+      }, 100);
     </script>
   </body>
 </html>

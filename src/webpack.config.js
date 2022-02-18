@@ -44,9 +44,6 @@ export default (opts = {}) => {
   }
 
   const outPath = path.resolve(dirCwd, args.output);
-  const pathTsConf = rootResolve('tsconfig.json');
-  const tsConfig = fs.existsSync(pathTsConf) ? require(pathTsConf) : {};
-  const optsTsCmpl = tsConfig.compilerOptions || {};
   const modulesPaths = [ 'node_modules', path.join(__dirname, '../node_modules')];
 
   let config = {
@@ -68,7 +65,7 @@ export default (opts = {}) => {
     },
     output: {
         path: outPath,
-        filename: `${name}.min.js`,
+        filename: 'index.js',
         library: name,
         libraryTarget: 'umd',
         globalObject: `typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : this)`,
@@ -80,13 +77,7 @@ export default (opts = {}) => {
         exclude: /node_modules/,
         options: {
           context: rootResolve(''),
-          configFile: pathTsConf,
-          compilerOptions: {
-            ...(
-              optsTsCmpl.declaration && !optsTsCmpl.declarationDir &&
-              { declarationDir: `${outPath}/types` }
-            )
-          }
+          configFile: rootResolve('tsconfig.json'),
         }
       }, {
           test: /\.js$/,
