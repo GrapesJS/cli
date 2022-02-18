@@ -1,6 +1,6 @@
 # GrapesJS CLI
 
-[![npm](https://img.shields.io/npm/v/grapesjs-cli.svg)](https://www.npmjs.com/package/grapesjs-cli) <span><a href="https://david-dm.org/artf/grapesjs-cli#info=dependencies"><img src="https://img.shields.io/david/artf/grapesjs-cli.svg" alt="Dependency Status" /></a></span>
+[![npm](https://img.shields.io/npm/v/grapesjs-cli.svg)](https://www.npmjs.com/package/grapesjs-cli)
 
 ![grapesjs-cli](https://user-images.githubusercontent.com/11614725/67523496-0ed41300-f6af-11e9-9850-7175355f2946.jpg)
 
