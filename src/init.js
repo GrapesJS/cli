@@ -92,6 +92,10 @@ const checkBoolean = value => value && value !== 'false' ? true : false;
 
 export const initPlugin = async(opts = {}) => {
     printRow('Start project creation...');
+    opts.components = checkBoolean(opts.components);
+    opts.blocks = checkBoolean(opts.blocks);
+    opts.i18n = checkBoolean(opts.i18n);
+
     const tasks = new Listr([
         {
             title: 'Creating initial source files',
@@ -99,15 +103,15 @@ export const initPlugin = async(opts = {}) => {
         }, {
             title: 'Creating custom Component Type file',
             task: () => createFileComponents(opts),
-            enabled: () => checkBoolean(opts.components),
+            enabled: () => opts.components,
         }, {
             title: 'Creating Blocks file',
             task: () => createFileBlocks(opts),
-            enabled: () => checkBoolean(opts.blocks),
+            enabled: () => opts.blocks,
         }, {
             title: 'Creating i18n structure',
             task: () => createI18n(opts),
-            enabled: () => checkBoolean(opts.i18n),
+            enabled: () => opts.i18n,
         }, {
             title: 'Update package.json',
             task: () => createPackage(opts),
