@@ -52,11 +52,13 @@ export default (opts = {}) => {
     devtool: isProd ? 'source-map' : 'eval',
     optimization: {
       minimizer: [new TerserPlugin({
+        extractComments: false,
         terserOptions: {
           compress: {
             evaluate: false, // Avoid breaking gjs scripts
           },
           output: {
+            comments: false,
             quote_style: 3, // Preserve original quotes
             preamble: banner, // banner here instead of BannerPlugin
           }
