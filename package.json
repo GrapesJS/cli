@@ -31,7 +31,7 @@
     "babel-loader": "^8.3.0",
     "chalk": "^4.1.2",
     "core-js": "^3.27.2",
-    "dts-bundle-generator": "^7.1.0",
+    "dts-bundle-generator": "^6.13.0",
     "esm": "^3.2.25",
     "html-webpack-plugin": "^5.5.0",
     "inquirer": "^8.2.5",
