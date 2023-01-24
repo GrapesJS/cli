@@ -37,7 +37,7 @@ export const buildLocale = async (opts = {}) => {
     // Create locale/index.js file
     let result = '';
     fs.readdirSync(localDst).forEach(file => {
-        const name = file.replace('.js', '');
+        const name = file.split('.')[0];
         result += `export { default as ${name} } from './${name}'\n`;
     });
     fs.writeFileSync(`${localDst}/index.js`, result);
