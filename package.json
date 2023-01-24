@@ -44,7 +44,7 @@
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1",
-    "yargs": "^16.2.0"
+    "yargs": "^17.6.2"
   },
   "devDependencies": {
     "eslint": "^7.32.0"
