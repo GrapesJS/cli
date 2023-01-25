@@ -109,9 +109,12 @@ export default (opts = {}) => {
             await buildLocale(opts);
             await buildDeclaration(opts);
 
-            errors ?
-                printError('Error during building') :
+            if (errors) {
+                printError(`Error during building`);
+                console.error(err);
+            } else {
                 printRow('Building completed successfully!');
+            }
         });
     };
 
