@@ -88,7 +88,7 @@ export default (opts = {}) => {
         };
 
         webpack(buildConf, async (err, stats) => {
-            const errors = err || stats.hasErrors();
+            const errors = err || (stats ? stats.hasErrors() : false);
             const statConf = {
                 hash: false,
                 colors: true,
@@ -97,11 +97,15 @@ export default (opts = {}) => {
                 modules: false,
                 ...normalizeJsonOpt(opts, 'stats'),
             };
-            opts.statsOutput && stats &&
-                fs.writeFileSync(rootResolve(opts.statsOutput), JSON.stringify(stats.toJson()));
-            isVerb && log(chalk.yellow('Stats config:\n'), statConf, '\n');
-            const result = stats.toString(statConf);
-            log(result, '\n');
+
+            if (stats) {
+                opts.statsOutput &&
+                    fs.writeFileSync(rootResolve(opts.statsOutput), JSON.stringify(stats.toJson()));
+                isVerb && log(chalk.yellow('Stats config:\n'), statConf, '\n');
+                const result = stats.toString(statConf);
+                log(result, '\n');
+            }
+
             await buildLocale(opts);
             await buildDeclaration(opts);
 
