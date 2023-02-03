@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { serve, build, init } from './main';
 import chalk from 'chalk';
+import { printError } from './utils';
 import { version } from '../package.json';
 
 yargs.usage(
@@ -138,17 +139,18 @@ export const createCommands = (yargs) => {
         },
     })
     .recommendCommands()
+    .strict()
 }
 
-export const argsToOpts = () => {
-    const { argv } = createCommands(yargs);
-    const result = { ...argv };
-    delete result.$0;
-
-    return result;
+export const argsToOpts = async () => {
+    return await createCommands(yargs).parse();
 };
 
-export default (opts = {}) => {
-    let options = argsToOpts();
-    if (!options._.length) yargs.showHelp();
+export default async (opts = {}) => {
+    try {
+        let options = await argsToOpts();
+        if (!options._.length) yargs.showHelp();
+    } catch (error) {
+        printError((error.stack || error).toString())
+    }
 }
