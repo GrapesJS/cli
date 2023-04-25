@@ -24,15 +24,17 @@
 
 
     <script type="text/javascript">
-      window.editor = grapesjs.init({
-        height: '100%',
-        container: '#gjs',
-        showOffsets: 1,
-        noticeOnUnload: 0,
-        storageManager: false,
-        fromElement: true,
-        plugins: ['<%= name %>'],
-      });
+      window.onload = () => {
+        window.editor = grapesjs.init({
+          height: '100%',
+          container: '#gjs',
+          showOffsets: 1,
+          noticeOnUnload: 0,
+          storageManager: false,
+          fromElement: true,
+          plugins: ['<%= name %>'],
+        });
+      }
     </script>
   </body>
 </html>
