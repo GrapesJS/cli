@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import { printRow, printError, isUndefined, log, ensureDir } from './utils';
+import { printRow, isUndefined, log, ensureDir } from './utils';
 import Listr from 'listr';
 import path from 'path';
 import fs from 'fs';
@@ -7,30 +7,42 @@ import spdxLicenseList from 'spdx-license-list/full';
 import template from 'lodash.template';
 import { version } from '../package.json';
 
+interface InitOptions {
+    license?: string;
+    name?: string;
+    components?: boolean;
+    blocks?: boolean;
+    i18n?: boolean;
+    verbose?: boolean,
+    rName?: string,
+    user?: string,
+    yes?: boolean,
+};
+
 const tmpPath = './template';
 const rootPath = process.cwd();
 
-const getName = str => str
+const getName = (str: string) => str
     .replace(/\_/g, '-')
     .split('-')
     .filter(i => i)
     .map(i => i[0].toUpperCase() + i.slice(1))
     .join(' ');
 
-const getTemplateFileContent = pth => {
+const getTemplateFileContent = (pth: string) => {
     const pt = path.resolve(__dirname, `${tmpPath}/${pth}`);
     return fs.readFileSync(pt, 'utf8');
 };
 
-const resolveRoot = pth => {
+const resolveRoot = (pth: string) => {
     return path.resolve(rootPath, pth);
 };
 
-const resolveLocal = pth => {
+const resolveLocal = (pth: string) => {
     return path.resolve(__dirname, `${tmpPath}/${pth}`);
 };
 
-const createSourceFiles = async (opts = {}) => {
+const createSourceFiles = async (opts: InitOptions = {}) => {
     const rdmSrc = getTemplateFileContent('README.md')
     const rdmDst = resolveRoot('README.md');
     const indxSrc = getTemplateFileContent('src/index.js');
@@ -56,14 +68,14 @@ const createSourceFiles = async (opts = {}) => {
     fs.copyFileSync(resolveLocal('tsconfig.json'), resolveRoot('tsconfig.json'));
 };
 
-const createFileComponents = (opts = {}) => {
+const createFileComponents = (opts: InitOptions = {}) => {
     const filepath = 'src/components.js';
     const cmpSrc = resolveLocal(filepath);
     const cmpDst = resolveRoot(filepath);
     opts.components && fs.copyFileSync(cmpSrc, cmpDst);
 };
 
-const createFileBlocks = (opts = {}) => {
+const createFileBlocks = (opts: InitOptions = {}) => {
     const filepath = 'src/blocks.js';
     const blkSrc = resolveLocal(filepath);
     const blkDst = resolveRoot(filepath);
@@ -90,7 +102,7 @@ const createPackage = (opts = {}) => {
 
 const checkBoolean = value => value && value !== 'false' ? true : false;
 
-export const initPlugin = async(opts = {}) => {
+export const initPlugin = async(opts: InitOptions = {}) => {
     printRow('Start project creation...');
     opts.components = checkBoolean(opts.components);
     opts.blocks = checkBoolean(opts.blocks);
@@ -120,7 +132,7 @@ export const initPlugin = async(opts = {}) => {
     await tasks.run();
 }
 
-export default async (opts = {}) => {
+export default async (opts: InitOptions = {}) => {
     const rootDir = path.basename(process.cwd());
     const questions = [];
     const {
