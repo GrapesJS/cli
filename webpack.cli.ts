@@ -27,17 +27,13 @@ const config: Configuration = {
           loader: 'babel-loader',
           options: {
             cacheDirectory: true,
-            // presets: ['@babel/preset-typescript'],
+            presets: ['@babel/preset-typescript'],
             assumptions: {
               setPublicClassFields: false,
             },
           },
         },
         exclude: [/node_modules/],
-      },
-      {
-        test: /\.ejs$/,
-        type: 'asset/source',
       },
     ],
   },
