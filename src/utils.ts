@@ -19,7 +19,7 @@ export const printRow = (str: string, {
     lineDown && console.log('');
 }
 
-export const printError = str => {
+export const printError = (str: string) => {
     printRow(str, { color: 'red' });
 }
 
@@ -34,11 +34,11 @@ export const ensureDir = (filePath: string) => {
 
 /**
  * Normalize JSON options
- * @param {Object} opts Options
- * @param {String} key Options name to normalize
+ * @param opts Options
+ * @param key Options name to normalize
  * @returns {Object}
  */
-export const normalizeJsonOpt = (opts, key) => {
+export const normalizeJsonOpt = (opts: Record<string, any>, key: string) => {
     let devServerOpt = opts[key] || {};
 
     if (isString(devServerOpt)) {
@@ -54,7 +54,7 @@ export const normalizeJsonOpt = (opts, key) => {
     return devServerOpt;
 }
 
-export const buildWebpackArgs = opts => {
+export const buildWebpackArgs = (opts: Record<string, any>) => {
     return {
         ...opts,
         babel: normalizeJsonOpt(opts, 'babel'),
