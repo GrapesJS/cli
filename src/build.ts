@@ -17,11 +17,18 @@ import chalk from 'chalk';
 import rimraf from 'rimraf'
 import { transformFileSync } from '@babel/core';
 
+interface BuildOptions {
+    verbose?: boolean;
+    patch?: boolean;
+    statsOutput?: string;
+    localePath?: string;
+}
+
 /**
  * Build locale files
  * @param {Object} opts
  */
-export const buildLocale = async (opts = {}) => {
+export const buildLocale = async (opts: BuildOptions = {}) => {
     const { localePath } = opts;
     if (!fs.existsSync(rootResolve(localePath))) return;
     printRow('Start building locale files...', { lineDown: 0 });
@@ -40,7 +47,7 @@ export const buildLocale = async (opts = {}) => {
     fs.writeFileSync(`${localDst}/index.js`, result);
 
     // Compile files
-    const babelOpts = { ...babelConfig(buildWebpackArgs(opts)) };
+    const babelOpts = { ...babelConfig(buildWebpackArgs(opts) as any) };
     fs.readdirSync(localDst).forEach(file => {
         const filePath = `${localDst}/${file}`;
         const compiled = transformFileSync(filePath, babelOpts).code;
@@ -54,7 +61,7 @@ export const buildLocale = async (opts = {}) => {
  * Build TS declaration file
  * @param {Object} opts
  */
- export const buildDeclaration = async (opts = {}) => {
+ export const buildDeclaration = async (opts: BuildOptions = {}) => {
     const filePath = rootResolve('src/index.ts');
     if (!fs.existsSync(filePath)) return;
 
@@ -72,7 +79,7 @@ export const buildLocale = async (opts = {}) => {
  * Build the library files
  * @param {Object} opts
  */
-export default (opts = {}) => {
+export default (opts: BuildOptions = {}) => {
     printRow('Start building the library...');
     const isVerb = opts.verbose;
     isVerb && log(chalk.yellow('Build config:\n'), opts, '\n');
