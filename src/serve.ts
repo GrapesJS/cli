@@ -4,11 +4,17 @@ import webpackDevServer from 'webpack-dev-server';
 import webpackConfig from './webpack.config';
 import chalk from 'chalk';
 
+interface ServeOptions {
+    host?: string;
+    port?: number;
+    verbose?: boolean;
+}
+
 /**
  * Start up the development server
  * @param {Object} opts
  */
-export default (opts = {}) => {
+export default (opts: ServeOptions = {}) => {
     printRow('Start the development server...');
     const { host, port } = opts;
     const isVerb = opts.verbose;
