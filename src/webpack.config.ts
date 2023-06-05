@@ -8,9 +8,9 @@ import fs from 'fs';
 const dirCwd = process.cwd();
 let plugins = [];
 
-export default (opts = {}) => {
+export default (opts: Record<string, any> = {}) => {
   const pkgPath = path.join(dirCwd, 'package.json');
-  const rawPackageJson = fs.readFileSync(pkgPath);
+  const rawPackageJson = fs.readFileSync(pkgPath) as unknown as string;
   const pkg = JSON.parse(rawPackageJson);
   const { args, cmdOpts = {} } = opts;
   const { htmlWebpack = {} } = args;
