@@ -9,7 +9,7 @@ const MODE = process.env.BUILD_MODE === 'production' ? 'production' : 'developme
 const config: Configuration = {
   context: process.cwd(),
   mode: MODE,
-  entry: './src/cli.js',
+  entry: './src/cli.ts',
   output: {
     filename: 'cli.js',
     path: resolve(__dirname, 'dist'),
@@ -19,9 +19,6 @@ const config: Configuration = {
     preset: 'minimal',
     warnings: false,
   },
-  // optimization: {
-  //   minimize: false
-  // },
   module: {
     rules: [
       {

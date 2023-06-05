@@ -2,15 +2,15 @@ import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
 
-export const isString = val => typeof val === 'string';
+export const isString = (val: any): val is string => typeof val === 'string';
 
-export const isUndefined = value => typeof value === 'undefined';
+export const isUndefined = (value: any) => typeof value === 'undefined';
 
-export const isFunction = value => typeof value === 'function';
+export const isFunction = (value: any): value is Function => typeof value === 'function';
 
-export const isObject = val => val !== null && !Array.isArray(val) && typeof val === 'object';
+export const isObject = (val: any) => val !== null && !Array.isArray(val) && typeof val === 'object';
 
-export const printRow = (str, {
+export const printRow = (str: string, {
     color = 'green',
     lineDown = 1,
 } = {}) => {
@@ -23,9 +23,9 @@ export const printError = str => {
     printRow(str, { color: 'red' });
 }
 
-export const log = (...args) => console.log.apply(this, args);
+export const log = (...args: any[]) => console.log.apply(this, args);
 
-export const ensureDir = filePath => {
+export const ensureDir = (filePath: string) => {
     const dirname = path.dirname(filePath);
     if (fs.existsSync(dirname)) return true;
     fs.mkdirSync(dirname);
@@ -62,7 +62,7 @@ export const buildWebpackArgs = opts => {
     }
 }
 
-export const copyRecursiveSync = (src, dest) => {
+export const copyRecursiveSync = (src: string, dest: string) => {
     const exists = fs.existsSync(src);
     const isDir = exists && fs.statSync(src).isDirectory();
 
@@ -76,14 +76,14 @@ export const copyRecursiveSync = (src, dest) => {
     }
 };
 
-export const rootResolve = val => path.resolve(process.cwd(), val);
+export const rootResolve = (val: string) => path.resolve(process.cwd(), val);
 
-export const resolve = (value) => {
+export const resolve = (value: string) => {
     // @ts-ignore need this to use the original 'require.resolve' as it's replaced by webpack
     return __non_webpack_require__.resolve(value);
 };
 
-export const babelConfig = (opts = {}) => ({
+export const babelConfig = (opts: { targets?: string } = {}) => ({
     presets: [
         [ resolve('@babel/preset-env'), {
             targets: opts.targets,
