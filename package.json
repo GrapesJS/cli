@@ -1,10 +1,13 @@
 {
   "name": "grapesjs-cli",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "GrapesJS CLI tool for the development",
-  "main": "src/index.js",
-  "bin": "bin/grapesjs-cli",
+  "bin": {
+    "grapesjs-cli": "dist/cli.js"
+  },
   "scripts": {
+    "build": "BUILD_MODE=production webpack --config ./webpack.cli.ts",
+    "build:watch": "webpack --config ./webpack.cli.ts --watch",
     "lint": "eslint src",
     "patch": "npm version patch -m 'Bump v%s'"
   },
@@ -32,7 +35,6 @@
     "chalk": "^4.1.2",
     "core-js": "^3.27.2",
     "dts-bundle-generator": "^6.13.0",
-    "esm": "^3.2.25",
     "html-webpack-plugin": "^5.5.0",
     "inquirer": "^8.2.5",
     "listr": "^0.14.3",
@@ -40,6 +42,7 @@
     "rimraf": "^4.1.2",
     "spdx-license-list": "^6.6.0",
     "ts-loader": "^9.4.2",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.4",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1",
@@ -47,6 +50,10 @@
     "yargs": "^17.6.2"
   },
   "devDependencies": {
-    "eslint": "^7.32.0"
+    "@types/webpack-node-externals": "^3.0.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "eslint": "^7.32.0",
+    "fork-ts-checker-webpack-plugin": "^8.0.0",
+    "webpack-node-externals": "^3.0.0"
   }
 }

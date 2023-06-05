@@ -146,7 +146,7 @@ export const argsToOpts = async () => {
     return await createCommands(yargs).parse();
 };
 
-export default async (opts = {}) => {
+export const run = async (opts = {}) => {
     try {
         let options = await argsToOpts();
         if (!options._.length) yargs.showHelp();
@@ -154,3 +154,5 @@ export default async (opts = {}) => {
         printError((error.stack || error).toString())
     }
 }
+
+run();

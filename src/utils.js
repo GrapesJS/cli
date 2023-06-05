@@ -78,13 +78,18 @@ export const copyRecursiveSync = (src, dest) => {
 
 export const rootResolve = val => path.resolve(process.cwd(), val);
 
+export const resolve = (value) => {
+    // @ts-ignore need this to use the original 'require.resolve' as it's replaced by webpack
+    return __non_webpack_require__.resolve(value);
+};
+
 export const babelConfig = (opts = {}) => ({
     presets: [
-        [ require.resolve('@babel/preset-env'), {
+        [ resolve('@babel/preset-env'), {
             targets: opts.targets,
             // useBuiltIns: 'usage', // this makes the build much bigger
             // corejs: 3,
         } ]
     ],
-    plugins: [ require.resolve('@babel/plugin-transform-runtime') ],
+    plugins: [ resolve('@babel/plugin-transform-runtime') ],
 })

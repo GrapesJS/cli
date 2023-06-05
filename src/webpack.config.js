@@ -1,4 +1,4 @@
-import { babelConfig, rootResolve, isFunction, isObject, log } from './utils';
+import { babelConfig, rootResolve, isFunction, isObject, log, resolve } from './utils';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import chalk from 'chalk';
@@ -9,7 +9,9 @@ const dirCwd = process.cwd();
 let plugins = [];
 
 export default (opts = {}) => {
-  const pkg = require(`${dirCwd}/package.json`);
+  const pkgPath = path.join(dirCwd, 'package.json');
+  const rawPackageJson = fs.readFileSync(pkgPath);
+  const pkg = JSON.parse(rawPackageJson);
   const { args, cmdOpts = {} } = opts;
   const { htmlWebpack = {} } = args;
   const name = pkg.name;
@@ -75,7 +77,7 @@ export default (opts = {}) => {
     module: {
       rules: [{
         test: /\.tsx?$/,
-        loader: require.resolve('ts-loader'),
+        loader: resolve('ts-loader'),
         exclude: /node_modules/,
         options: {
           context: rootResolve(''),
@@ -83,7 +85,7 @@ export default (opts = {}) => {
         }
       }, {
           test: /\.js$/,
-          loader: require.resolve('babel-loader'),
+          loader: resolve('babel-loader'),
           include: /src/,
           options: {
             ...babelConfig(args),
