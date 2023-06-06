@@ -1,7 +1,7 @@
 {
   "name": "grapesjs-cli",
   "version": "4.1.0",
-  "description": "GrapesJS CLI tool for the development",
+  "description": "GrapesJS CLI tool for the plugin development",
   "bin": {
     "grapesjs-cli": "dist/cli.js"
   },
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/artf/grapesjs-cli.git"
+    "url": "https://github.com/GrapesJS/cli.git"
   },
   "keywords": [
     "grapesjs",
