@@ -1,4 +1,4 @@
-import { babelConfig, rootResolve, isFunction, isObject, log, resolve } from './utils';
+import { babelConfig, rootResolve, isFunction, isObject, log, resolve, originalRequire } from './utils';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import chalk from 'chalk';
@@ -103,7 +103,13 @@ export default (opts: Record<string, any> = {}) => {
 
   // Try to load local webpack config
   const localWebpackPath = rootResolve('webpack.config.js');
-  const localWebpackConf = fs.existsSync(localWebpackPath) ? require(localWebpackPath).default : 0;
+  let localWebpackConf: any;
+
+  if (fs.existsSync(localWebpackPath)) {
+    const customWebpack = originalRequire()(localWebpackPath);
+    localWebpackConf = customWebpack.default || customWebpack;
+  }
+
   if (isFunction(localWebpackConf)) {
       const fnRes = localWebpackConf({ config });
       config = isObject(fnRes) ? fnRes : config;

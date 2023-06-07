@@ -78,9 +78,13 @@ export const copyRecursiveSync = (src: string, dest: string) => {
 
 export const rootResolve = (val: string) => path.resolve(process.cwd(), val);
 
-export const resolve = (value: string) => {
+export const originalRequire = () => {
     // @ts-ignore need this to use the original 'require.resolve' as it's replaced by webpack
-    return __non_webpack_require__.resolve(value);
+    return __non_webpack_require__;
+};
+
+export const resolve = (value: string) => {
+    return originalRequire().resolve(value);
 };
 
 export const babelConfig = (opts: { targets?: string } = {}) => ({
