@@ -1,6 +1,6 @@
 {
   "name": "grapesjs-cli",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "GrapesJS CLI tool for the plugin development",
   "bin": {
     "grapesjs-cli": "dist/cli.js"
