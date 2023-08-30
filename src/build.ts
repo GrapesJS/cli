@@ -7,6 +7,7 @@ import {
     rootResolve,
     babelConfig,
     log,
+    writeFile,
 } from './utils';
 import { generateDtsBundle } from "dts-bundle-generator";
 import webpack from 'webpack';
@@ -22,6 +23,7 @@ interface BuildOptions {
     patch?: boolean;
     statsOutput?: string;
     localePath?: string;
+    dts?: 'include' | 'skip' | 'only';
 }
 
 /**
@@ -70,7 +72,7 @@ export const buildLocale = async (opts: BuildOptions = {}) => {
     const entry = { filePath, output: { noBanner: true }};
     const bundleOptions = { preferredConfigPath: rootResolve('tsconfig.json') };
     const result = generateDtsBundle([entry], bundleOptions)[0];
-    fs.writeFileSync(rootResolve('dist/index.d.ts'), result);
+    await writeFile(rootResolve('dist/index.d.ts'), result);
 
     printRow('TS declaration file building completed successfully!');
  }
@@ -82,6 +84,7 @@ export const buildLocale = async (opts: BuildOptions = {}) => {
 export default (opts: BuildOptions = {}) => {
     printRow('Start building the library...');
     const isVerb = opts.verbose;
+    const { dts } = opts;
     isVerb && log(chalk.yellow('Build config:\n'), opts, '\n');
 
     const buildWebpack = () => {
@@ -93,6 +96,10 @@ export default (opts: BuildOptions = {}) => {
             }),
             ...normalizeJsonOpt(opts, 'config'),
         };
+
+        if (dts === 'only') {
+            return buildDeclaration(opts);
+        }
 
         webpack(buildConf, async (err, stats) => {
             const errors = err || (stats ? stats.hasErrors() : false);
@@ -114,7 +121,10 @@ export default (opts: BuildOptions = {}) => {
             }
 
             await buildLocale(opts);
-            await buildDeclaration(opts);
+
+            if (dts !== 'skip') {
+                await buildDeclaration(opts);
+            }
 
             if (errors) {
                 printError(`Error during building`);

@@ -90,6 +90,11 @@ export const createCommands = (yargs) => {
             describe: 'Path to the directory containing locale files',
             type: 'string',
             default: 'src/locale',
+        })
+        .positional('dts', {
+            describe: 'Generate typescript dts file ("include", "skip", "only")',
+            type: 'string',
+            default: 'include',
         });
         webpackOptions(yargs);
     }, (argv) => build(argv))

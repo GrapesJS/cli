@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
+import fsp from 'fs/promises';
 
 export const isString = (val: any): val is string => typeof val === 'string';
 
@@ -75,6 +76,30 @@ export const copyRecursiveSync = (src: string, dest: string) => {
         fs.copyFileSync(src, dest);
     }
 };
+
+export const isPathExists = async (path: string) => {
+    try {
+      await fsp.access(path);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+
+export const writeFile = async (filePath: string, data: string) => {
+    try {
+        const dirname = path.dirname(filePath);
+        const exist = await isPathExists(dirname);
+        if (!exist) {
+            await fsp.mkdir(dirname, { recursive: true });
+        }
+
+        await fsp.writeFile(filePath, data, 'utf8');
+    } catch (err) {
+        throw new Error(err);
+    }
+}
 
 export const rootResolve = (val: string) => path.resolve(process.cwd(), val);
 

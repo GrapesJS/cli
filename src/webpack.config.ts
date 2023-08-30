@@ -4,6 +4,7 @@ import TerserPlugin from 'terser-webpack-plugin';
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
+import webpack from 'webpack';
 
 const dirCwd = process.cwd();
 let plugins = [];
@@ -111,7 +112,7 @@ export default (opts: Record<string, any> = {}) => {
   }
 
   if (isFunction(localWebpackConf)) {
-      const fnRes = localWebpackConf({ config });
+      const fnRes = localWebpackConf({ config, webpack, pkg });
       config = isObject(fnRes) ? fnRes : config;
   }
 
