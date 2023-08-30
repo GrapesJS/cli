@@ -1,11 +1,13 @@
 {
   "name": "grapesjs-cli",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "GrapesJS CLI tool for the plugin development",
   "bin": {
     "grapesjs-cli": "dist/cli.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "BUILD_MODE=production webpack --config ./webpack.cli.ts",
     "build:watch": "webpack --config ./webpack.cli.ts --watch",
