@@ -63,7 +63,7 @@ npx grapesjs-cli serve --devServer='{"https": true}'
 * Once the development is finished you can build your plugin and generate the minified file ready for production
 
 ```sh
-grapesjs-cli build
+npx grapesjs-cli build
 ```
 
 * Before publishing your package remember to complete your README.md file with all the available options, components, blocks and so on.
