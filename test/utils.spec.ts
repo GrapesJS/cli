@@ -64,10 +64,11 @@ describe('utils', () => {
 
 
     describe('printRow', () => {
+        // TODO: We should refactor the function to make lineDown a boolean not a number
         it('should console.log the given string with the specified color and line breaks', () => {
             const str = 'Test string';
             const color = 'blue';
-            const lineDown = 2;
+            const lineDown = 1;
 
             console.log = jest.fn();
 
@@ -80,7 +81,7 @@ describe('utils', () => {
         it('should not add a line break if lineDown is false', () => {
             const str = 'Test string';
             const color = 'green';
-            const lineDown = false;
+            const lineDown = 0;
 
             console.log = jest.fn();
 
