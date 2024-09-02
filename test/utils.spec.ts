@@ -275,20 +275,13 @@ describe('utils', () => {
         });
     });
 
-    // TODO: Fix this test as we can't mock the process.cwd
-    // describe('rootResolve', () => {
-    //     jest.mock('process', () => ({
-    //         cwd: () => 'mocked value'
-    //     }));
+    describe('rootResolve', () => {
+        it('should resolve a relative path to an absolute path', () => {
+            const result = rootResolve('src/index.js');
 
-    //     it('should resolve a relative path to an absolute path', () => {
-    //         const cwd = 'test/project';
-
-    //         const result = rootResolve('src/index.js');
-
-    //         expect(result).toBe(path.join(cwd, 'src/index.js'));
-    //     });
-    // });
+            expect(result).toBe(path.join(process.cwd(), 'src/index.js'));
+        });
+    });
 
     describe('originalRequire', () => {
         it('should return the original require.resolve function', () => {
