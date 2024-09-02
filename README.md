@@ -4,17 +4,12 @@
 
 ![grapesjs-cli](https://user-images.githubusercontent.com/11614725/67523496-0ed41300-f6af-11e9-9850-7175355f2946.jpg)
 
-
 A simple CLI library for helping in GrapesJS plugin development.
 
 The goal of this package is to avoid the hassle of setting up all the dependencies and configurations for the plugin development by centralizing and speeding up the necessary steps during the process.
 
 * Fast project scaffolding
 * No need to touch Babel and Webpack configurations
-
-
-
-
 
 ## Plugin from 0 to 100
 
@@ -47,7 +42,6 @@ You can also skip all the questions with `-y` option or pass all the answers via
 npx grapesjs-cli init -y --user=YOUR-GITHUB-USERNAME
 ```
 
-
 * The command will scaffold the `src` directory and a bunch of other files inside your project. The `src/index.js` will be the entry point of your plugin. Before starting developing your plugin run the development server and open the printed URL (eg. the default is http://localhost:8080)
 
 ```sh
@@ -69,21 +63,18 @@ npx grapesjs-cli serve --devServer='{"https": true}'
 * Once the development is finished you can build your plugin and generate the minified file ready for production
 
 ```sh
-grapesjs-cli build
+npx grapesjs-cli build
 ```
 
 * Before publishing your package remember to complete your README.md file with all the available options, components, blocks and so on.
 For a better user engagement create a simple live demo by using services like [JSFiddle](https://jsfiddle.net) [CodeSandbox](https://codesandbox.io) [CodePen](https://codepen.io) and link it in your README. To help you in this process we'll print all the necessary HTML/CSS/JS in your README, so it will be just a matter of copy-pasting on some of those services.
-
-
-
-
 
 ## Customization
 
 ### Customize webpack config
 
 If you need to customize the webpack configuration, you can create `webpack.config.js` file in the root dir of your project and export a function, which should return the new configuration object. Check the example below.
+
 ```js
 // YOUR-PROJECT-DIR/webpack.config.js
 
@@ -100,8 +91,6 @@ export default ({ config }) => {
     };
 }
 ```
-
-
 
 ## Generic CLI usage
 
@@ -122,9 +111,6 @@ Run the command
 ```sh
 grapesjs-cli COMMAND --OPT1 --OPT2=VALUE
 ```
-
-
-
 
 
 ## License
