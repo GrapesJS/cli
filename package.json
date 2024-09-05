@@ -12,7 +12,8 @@
     "build": "BUILD_MODE=production webpack --config ./webpack.cli.ts",
     "build:watch": "webpack --config ./webpack.cli.ts --watch",
     "lint": "eslint src",
-    "patch": "npm version patch -m 'Bump v%s'"
+    "patch": "npm version patch -m 'Bump v%s'",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -53,10 +54,13 @@
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.21.5",
+    "@types/jest": "^29.5.12",
     "@types/webpack-node-externals": "^3.0.0",
+    "babel-jest": "^29.7.0",
     "copy-webpack-plugin": "^11.0.0",
     "eslint": "^7.32.0",
     "fork-ts-checker-webpack-plugin": "^8.0.0",
+    "jest": "^29.7.0",
     "webpack-node-externals": "^3.0.0"
   }
 }
